@@ -1,0 +1,176 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic "Nexus Cybertronian Core Array" [ref=e4]
+      - generic [ref=e13]:
+        - heading "PRIME LEDGER" [level=1] [ref=e14]
+        - generic [ref=e15]: Cyber-Matrix Bio-Data Array // Node 01
+    - generic "Entity Telemetry Status" [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e19]: ^ ^
+        - generic [ref=e20]: ═════
+    - generic [ref=e21]:
+      - 'button "✉ GMAIL: nctelecomtech@gmail.com" [ref=e22] [cursor=pointer]'
+      - 'button "🔇 AUDIO: OFF" [ref=e23] [cursor=pointer]'
+  - region "Monthly Budget Sentinel" [ref=e24]:
+    - generic [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: "🛡 BUDGET SENTINEL:"
+        - generic [ref=e28]: NORMAL // 0.0% OF ALLOCATION CONSUMED
+      - button "⚙ Set Budget Target" [ref=e29] [cursor=pointer]
+    - generic [ref=e31]:
+      - generic [ref=e32]: "Spent: $0.00 / Target: $1000.00"
+      - generic [ref=e33]: "Remaining: $1000.00"
+  - region "Financial Telemetry" [ref=e34]:
+    - generic [ref=e35]:
+      - generic [ref=e36]: ⚡ Total Outlay
+      - generic [ref=e37]: $0.00
+      - generic [ref=e38]: 0 transmissions logged
+    - generic [ref=e39]:
+      - generic [ref=e40]: 🍄 Month-to-Date
+      - generic [ref=e41]: $0.00
+      - generic [ref=e42]: Current cycle burn
+    - generic [ref=e43]:
+      - generic [ref=e44]: ⚙ Average Outlay
+      - generic [ref=e45]: $0.00
+      - generic [ref=e46]: Per transmission
+    - generic [ref=e47]:
+      - generic [ref=e48]: ▲ Peak Transmission
+      - generic [ref=e49]: $0.00
+      - generic [ref=e50]: None recorded
+  - button "📊 DEEP FINANCIAL TELEMETRY DRAWER (VELOCITY, MEDIAN, COUNTERPARTIES) ▼" [ref=e51] [cursor=pointer]:
+    - generic [ref=e52]: 📊 DEEP FINANCIAL TELEMETRY DRAWER (VELOCITY, MEDIAN, COUNTERPARTIES)
+    - generic [ref=e53]: ▼
+  - generic [ref=e54]:
+    - heading "// 30-Day Spending Velocity Timeline OUTLAY SPIKES OVER TIME" [level=3] [ref=e56]:
+      - generic [ref=e57]: // 30-Day Spending Velocity Timeline
+      - generic [ref=e58]: OUTLAY SPIKES OVER TIME
+    - heading "// Category Donut Matrix RADAR SHARE" [level=3] [ref=e62]:
+      - generic [ref=e63]: // Category Donut Matrix
+      - generic [ref=e64]: RADAR SHARE
+  - generic [ref=e67]:
+    - generic [ref=e68]:
+      - heading "> Log Transmission" [level=2] [ref=e69]
+      - generic [ref=e71] [cursor=pointer]:
+        - generic [ref=e72]: 🍄
+        - generic [ref=e73]: OPTICAL & STATEMENT INGESTION
+        - generic [ref=e74]: Drop Receipt Photo, Bank Statement PDF/CSV, or Press Ctrl+V to Paste Screenshot
+        - generic [ref=e75]:
+          - button "📁 Select File" [ref=e76]
+          - button "📋 Paste Text" [ref=e77]
+          - button "✉ Gmail Harvester" [ref=e78]
+      - generic [ref=e79]:
+        - generic [ref=e80]: "Designation (Item):"
+        - textbox "Designation (Item):" [ref=e81]:
+          - /placeholder: e.g. Server Hosting
+        - generic [ref=e82]: "Source (Vendor):"
+        - textbox "Source (Vendor):" [ref=e83]:
+          - /placeholder: e.g. Namecheap
+        - generic [ref=e84]: "Category:"
+        - combobox "Category:" [ref=e85] [cursor=pointer]:
+          - option "Hardware"
+          - option "Software"
+          - option "Services" [selected]
+          - option "Subscriptions"
+          - option "Other"
+        - generic [ref=e86]: "Value ($):"
+        - spinbutton "Value ($):" [ref=e87]
+        - generic [ref=e88]: "Timestamp:"
+        - textbox "Timestamp:" [ref=e89]: 2026-09-03
+        - generic [ref=e90]: "Tactical Notes / Memo (Optional):"
+        - textbox "Tactical Notes / Memo (Optional):" [ref=e91]:
+          - /placeholder: "Invoice #, account tag, or authorization ref..."
+        - button "Execute Entry" [ref=e93] [cursor=pointer]
+      - generic [ref=e94]:
+        - generic [ref=e95]:
+          - generic [ref=e96]: "🔁 RECURRING COMMITMENT:"
+          - generic [ref=e97]: $0.00/mo
+        - generic [ref=e98]:
+          - generic [ref=e99]: "Projected Annual Run-Rate (ARR):"
+          - strong [ref=e100]: $0.00/yr
+      - generic [ref=e101]:
+        - heading "// Spend Distribution" [level=3] [ref=e102]
+        - generic [ref=e103]:
+          - generic [ref=e105]:
+            - generic [ref=e106]: Hardware
+            - generic [ref=e107]: $0.00 (0%)
+          - generic [ref=e110]:
+            - generic [ref=e111]: Software
+            - generic [ref=e112]: $0.00 (0%)
+          - generic [ref=e115]:
+            - generic [ref=e116]: Services
+            - generic [ref=e117]: $0.00 (0%)
+          - generic [ref=e120]:
+            - generic [ref=e121]: Subscriptions
+            - generic [ref=e122]: $0.00 (0%)
+          - generic [ref=e125]:
+            - generic [ref=e126]: Other
+            - generic [ref=e127]: $0.00 (0%)
+      - text: ⚙
+    - generic [ref=e129]:
+      - generic [ref=e130]:
+        - heading "> Active Ledger" [level=2] [ref=e131]
+        - generic [ref=e132]: "Filtered Sum: $0.00"
+      - generic [ref=e133]:
+        - searchbox "Search ledger entries" [ref=e134]
+        - combobox "Filter by Category" [ref=e135] [cursor=pointer]:
+          - option "All Categories" [selected]
+          - option "Hardware"
+          - option "Software"
+          - option "Services"
+          - option "Subscriptions"
+          - option "Other"
+        - combobox "Filter by Date Window" [ref=e136] [cursor=pointer]:
+          - option "All Time" [selected]
+          - option "This Month"
+          - option "Last 30 Days"
+          - option "This Year"
+        - generic "Filter by Minimum and Maximum Amount" [ref=e137]:
+          - spinbutton "Min $" [ref=e138]
+          - generic [ref=e139]: "-"
+          - spinbutton "Max $" [ref=e140]
+      - generic [ref=e141]:
+        - button "✉ Gmail Harvester" [ref=e142] [cursor=pointer]
+        - button "⚡ Scraper HUD" [ref=e143] [cursor=pointer]
+        - button "⬇ CSV" [ref=e144] [cursor=pointer]
+        - button "⬇ JSON Backup" [ref=e145] [cursor=pointer]
+        - button "⬆ Restore JSON" [ref=e146] [cursor=pointer]
+        - button "⚡ Demo Seed" [ref=e147] [cursor=pointer]
+        - button "🖨 Print" [ref=e148] [cursor=pointer]
+        - button "⚠ Purge All" [ref=e149] [cursor=pointer]
+      - table "Purchase ledger" [ref=e151]:
+        - rowgroup [ref=e152]:
+          - row [ref=e153]:
+            - columnheader [ref=e154]:
+              - checkbox "Select All On Page" [ref=e155]
+            - columnheader "Date▼" [ref=e156] [cursor=pointer]:
+              - text: Date
+              - generic [ref=e157]: ▼
+            - columnheader "Designation" [ref=e158]
+            - columnheader "Vendor" [ref=e159]
+            - columnheader "Cat" [ref=e160]
+            - columnheader "Amount◆" [ref=e161] [cursor=pointer]:
+              - text: Amount
+              - generic [ref=e162]: ◆
+            - columnheader "Actions" [ref=e163]
+        - rowgroup [ref=e164]:
+          - row [ref=e165]:
+            - cell "— NO TRANSMISSIONS LOGGED —" [ref=e166]
+      - generic [ref=e167]:
+        - generic [ref=e168]:
+          - generic [ref=e169]: "Rows per page:"
+          - combobox [ref=e170] [cursor=pointer]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "All"
+          - generic [ref=e171]: Showing 0-0 of 0
+        - generic [ref=e172]:
+          - button "« Prev" [disabled] [ref=e173]
+          - generic [ref=e174]: Page 1 of 1
+          - button "Next »" [disabled] [ref=e175]
+      - generic [ref=e176]: "Shortcuts: Ctrl+V Paste Receipt/Statement | Ctrl+K Search | Alt+N New Entry | Esc Close Modals / Reset"
+      - text: ⚙
+  - status:
+    - generic: TRANSMISSION PURGED
+    - button "↩ UNDO"

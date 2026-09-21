@@ -1,0 +1,708 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - generic "N8 DEV Cyber-Armor Vault Core" [ref=e4]
+      - generic [ref=e23]:
+        - heading "PRIME LEDGER N8 DEV" [level=1] [ref=e24]:
+          - text: PRIME
+          - generic [ref=e25]: LEDGER
+          - generic [ref=e26]: N8 DEV
+        - generic [ref=e27]: Cyber-Armor Secure Data Vault // Node 01
+    - generic "Entity Telemetry Status" [ref=e29]:
+      - generic [ref=e30]:
+        - generic [ref=e31]: O O
+        - generic [ref=e32]: O
+    - generic [ref=e33]:
+      - combobox "Active Financial Currency" [ref=e34] [cursor=pointer]:
+        - option "USD ($)" [selected]
+        - option "EUR (€)"
+        - option "GBP (£)"
+        - option "CAD (CA$)"
+        - option "JPY (¥)"
+      - generic "Financial Vitality Score (Discipline, Savings & Pacing Index)" [ref=e35] [cursor=pointer]:
+        - generic [ref=e36]: "VITALITY:"
+        - strong [ref=e37]: 85/100
+        - generic [ref=e38]: BALANCED
+      - 'button "⚡ ZERO-BASED BUDGET: +$18.00 NET" [ref=e39] [cursor=pointer]':
+        - text: "⚡ ZERO-BASED BUDGET:"
+        - generic [ref=e40]: +$18.00 NET
+      - generic "Adjust Interface Font Sizing & Viewability (Ctrl+Alt+= / Ctrl+Alt+-)" [ref=e41]:
+        - generic [ref=e42]: Aa
+        - button "A-" [ref=e43] [cursor=pointer]
+        - button "Standard" [ref=e44] [cursor=pointer]
+        - button "A+" [ref=e45] [cursor=pointer]
+        - button "A++" [ref=e46] [cursor=pointer]
+      - 'button "✉ GMAIL: nctelecomtech@gmail.com" [ref=e47] [cursor=pointer]'
+      - 'button "🔇 AUDIO: OFF" [ref=e48] [cursor=pointer]'
+  - region "Tactical Alert Deck" [ref=e49]:
+    - generic [ref=e50]:
+      - generic [ref=e51]: 🚨
+      - generic [ref=e52]:
+        - generic [ref=e53]: CRITICAL DEBT ALERT // 26.00% APR ON CREDIT CARD 1
+        - generic [ref=e54]: Current balance of $3,450.00 drains approximately $74.75/month in pure interest. Prioritize allocating your monthly surplus ($18.00) to extinguish this balance first.
+      - button "View Debt Plan" [ref=e55] [cursor=pointer]
+    - generic [ref=e56]:
+      - generic [ref=e57]: 🎯
+      - generic [ref=e58]:
+        - generic [ref=e59]: TARGET MET // [HOUSING] EXACTLY ON BUDGET
+        - generic [ref=e60]: Allocated pool is fully utilized at 100.0% ($1,600.00 of $1,600.00). Zero deficit incurred.
+      - button "Inspect Category" [ref=e61] [cursor=pointer]
+    - generic [ref=e62]:
+      - generic [ref=e63]: ⚡
+      - generic [ref=e64]:
+        - generic [ref=e65]: CATEGORY OVERRUN // [SERVICES] EXCEEDED LIMIT
+        - generic [ref=e66]: Current cycle burn is $248.50 against allowance of $100.00 (+$148.50 overrun / 249%).
+      - button "Inspect Category" [ref=e67] [cursor=pointer]
+  - region "Monthly Budget Sentinel" [ref=e68]:
+    - generic [ref=e69]:
+      - generic [ref=e70]:
+        - generic [ref=e71]: "🛡 BUDGET SENTINEL:"
+        - generic [ref=e72]: NORMAL // 26.5% OF ALLOCATION CONSUMED
+      - generic [ref=e73]:
+        - 'button "Mode: Full ($6,982.00)" [ref=e74] [cursor=pointer]'
+        - button "⚙ Tactical Budget Matrix" [ref=e75] [cursor=pointer]
+    - generic [ref=e78]:
+      - generic [ref=e79]: "Spent: $1,848.50 / Target: $6,982.00 [Full ($6,982)]"
+      - generic [ref=e80]: "Remaining: $5,133.50"
+  - region "Financial Telemetry" [ref=e81]:
+    - generic [ref=e82]:
+      - generic [ref=e83]: ⚡ Total Outlay
+      - generic [ref=e84]: $2,785.13
+      - generic [ref=e85]: 8 transmissions active
+    - generic [ref=e86]:
+      - generic [ref=e87]:
+        - generic [ref=e88]: 🍄 Month-to-Date
+        - generic [ref=e89]: +97.4% vs prior
+      - generic [ref=e90]: $1,848.50
+      - generic [ref=e91]: Sep cycle outlays
+    - generic [ref=e92]:
+      - generic [ref=e93]: ⚙ Average Outlay
+      - generic [ref=e94]: $348.14
+      - generic [ref=e95]: Per transmission
+    - generic [ref=e96]:
+      - generic [ref=e97]: ▲ Peak Transmission
+      - generic [ref=e98]: $1,600.00
+      - generic [ref=e99]: Apartment Leasin...
+  - button "📊 DEEP FINANCIAL TELEMETRY DRAWER (VELOCITY, MEDIAN, COUNTERPARTIES) ▼" [ref=e100] [cursor=pointer]:
+    - generic [ref=e101]: 📊 DEEP FINANCIAL TELEMETRY DRAWER (VELOCITY, MEDIAN, COUNTERPARTIES)
+    - generic [ref=e102]: ▼
+  - generic [ref=e103]:
+    - heading "// 30-Day Spending Velocity Timeline HOVER BARS FOR TELEMETRY" [level=3] [ref=e105]:
+      - generic [ref=e106]: // 30-Day Spending Velocity Timeline
+      - generic [ref=e107]: HOVER BARS FOR TELEMETRY
+    - heading "// Category Donut Matrix HOVER SLICES FOR SHARE" [level=3] [ref=e111]:
+      - generic [ref=e112]: // Category Donut Matrix
+      - generic [ref=e113]: HOVER SLICES FOR SHARE
+  - region "Recurring Bill Cadence Forecaster" [ref=e116]:
+    - generic [ref=e117]:
+      - generic [ref=e118]: 📅 RECURRING BILL CADENCE & DUE DATE SENTINEL
+      - generic [ref=e120]: September 2026 Obligation Cadence
+    - generic [ref=e121]:
+      - generic [ref=e122]:
+        - generic [ref=e123]:
+          - strong [ref=e124]: 🏠 Housing (Rent)
+          - generic [ref=e125]: $1,600.00/mo
+        - generic [ref=e126]: ✓ PAID ($1,600.00)
+      - generic [ref=e127]:
+        - generic [ref=e128]:
+          - strong [ref=e129]: ⚡ Gas ⛽ / Elec ⚡
+          - generic [ref=e130]: $320.00/mo
+        - generic [ref=e131]: Due on 15th (12d)
+      - generic [ref=e132]:
+        - generic [ref=e133]:
+          - strong [ref=e134]: 📱 Internet + 📱
+          - generic [ref=e135]: $224.00/mo
+        - generic [ref=e136]: Due on 22th (19d)
+      - generic [ref=e137]:
+        - generic [ref=e138]:
+          - strong [ref=e139]: 🚗 Car Payment/maint
+          - generic [ref=e140]: $600.00/mo
+        - generic [ref=e141]: Due on 25th (22d)
+      - generic [ref=e142]:
+        - generic [ref=e143]:
+          - strong [ref=e144]: 🛡 Car Insurance
+          - generic [ref=e145]: $250.00/mo
+        - generic [ref=e146]: Due on 28th (25d)
+  - generic [ref=e147]:
+    - generic [ref=e148]:
+      - heading "> Log Transmission" [level=2] [ref=e149]
+      - generic [ref=e151] [cursor=pointer]:
+        - generic [ref=e152]: 🍄
+        - generic [ref=e153]: OPTICAL & STATEMENT INGESTION
+        - generic [ref=e154]: Drop Receipt Photo, Bank Statement PDF/CSV, or Press Ctrl+V to Paste Screenshot
+        - generic [ref=e155]:
+          - button "📁 Select File" [ref=e156]
+          - button "📋 Paste Text" [ref=e157]
+          - button "✉ Gmail Harvester" [ref=e158]
+      - generic [ref=e159]:
+        - generic [ref=e160]: "Designation (Item):"
+        - textbox "Designation (Item):" [ref=e161]:
+          - /placeholder: e.g. Server Hosting
+        - generic [ref=e162]: "Source (Vendor):"
+        - combobox "Source (Vendor):" [ref=e163]
+        - generic [ref=e164]: "Category:"
+        - combobox "Category:" [ref=e165] [cursor=pointer]:
+          - option "Housing ($1,600.00/mo)"
+          - option "Renters / Home Insurance ($15.00/mo)"
+          - option "Storage fees ($100.00/mo)"
+          - option "Gas ⛽ / Elec ⚡ ($320.00/mo)"
+          - option "Water 💦 ($100.00/mo)"
+          - option "Internet + 📱 ($224.00/mo)"
+          - option "Car Payment/maint ($600.00/mo)"
+          - option "Car insurance ($250.00/mo)"
+          - option "Car Registration ($15.00/mo)"
+          - option "Giving living ($700.00/mo)"
+          - option "DITTO (keep $$ in family) ($500.00/mo)"
+          - option "Health (insurance, etc) ($80.00/mo)"
+          - option "Life Insurance ($50.00/mo)"
+          - option "Subscriptions ($43.00/mo)"
+          - option "Curriculum ($20.00/mo)"
+          - option "Co-op / field trips ($40.00/mo)"
+          - option "LTD Bundle ($90.00/mo)"
+          - option "Conferences/travel ($280.00/mo)"
+          - option "Info Sessions ($25.00/mo)"
+          - option "Team Meetings ($5.00/mo)"
+          - option "Other -(Books, etc) ($5.00/mo)"
+          - option "Food - Groceries ($800.00/mo)" [selected]
+          - option "Food - Out to Eat ($200.00/mo)"
+          - option "Gas - Car ($300.00/mo)"
+          - option "Entertainment ($100.00/mo)"
+          - option "Pets (food/litter) ($100.00/mo)"
+          - option "Stress Mgmt ($200.00/mo)"
+          - option "Personal Care ($20.00/mo)"
+          - option "Savings (Personal) ($200.00/mo)"
+          - option "Business Seed Fund ($340.00/mo)"
+          - option "Hardware, Tools & Materials"
+          - option "Telecom & Cloud Infrastructure"
+          - option "Other"
+        - generic [ref=e166]: "Value ($):"
+        - spinbutton "Value ($):" [ref=e167]
+        - generic [ref=e168]:
+          - generic [ref=e169]: "Timestamp:"
+          - generic [ref=e170]:
+            - button "Today" [ref=e171] [cursor=pointer]
+            - button "Yesterday" [ref=e172] [cursor=pointer]
+            - button "-7d" [ref=e173] [cursor=pointer]
+        - textbox "Timestamp:" [ref=e174]: 2026-09-03
+        - generic [ref=e175]:
+          - generic [ref=e176]: "Tactical Notes & #Tags (Optional):"
+          - button "⚡ Gen Telecom Note" [ref=e177] [cursor=pointer]
+        - 'textbox "Tactical Notes & #Tags (Optional):" [ref=e178]':
+          - /placeholder: "Invoice #, account tag (e.g. #tax, #reimbursable, #nexus)..."
+        - button "Execute Entry" [ref=e180] [cursor=pointer]
+      - generic [ref=e181]:
+        - generic [ref=e182]:
+          - generic [ref=e183]: "🔁 RECURRING COMMITMENT:"
+          - generic [ref=e184]: $64.00/mo
+        - generic [ref=e185]:
+          - generic [ref=e186]: "Projected Annual Run-Rate (ARR):"
+          - strong [ref=e187]: $768.00/yr
+      - generic [ref=e188]:
+        - heading "// Spend Distribution" [level=3] [ref=e189]
+        - generic [ref=e190]:
+          - generic "Click to isolate [Housing] in ledger" [ref=e191] [cursor=pointer]:
+            - generic [ref=e192]:
+              - generic [ref=e193]:
+                - text: Housing
+                - generic [ref=e194]: ON BUDGET
+              - generic [ref=e195]: $1,600.00 / $1,600.00 (100%)
+          - generic "Click to isolate [Internet + 📱] in ledger" [ref=e198] [cursor=pointer]:
+            - generic [ref=e199]:
+              - generic [ref=e200]: Internet + 📱
+              - generic [ref=e201]: $0.00 / $224.00 (0%)
+          - generic "Click to isolate [Subscriptions] in ledger" [ref=e203] [cursor=pointer]:
+            - generic [ref=e204]:
+              - generic [ref=e205]: SubscriptionsOVER BUDGET
+              - generic [ref=e206]: $64.00 / $43.00 (149%)
+          - generic "Click to isolate [Gas - Car] in ledger" [ref=e209] [cursor=pointer]:
+            - generic [ref=e210]:
+              - generic [ref=e211]: Gas - Car
+              - generic [ref=e212]: $0.00 / $300.00 (0%)
+          - generic "Click to isolate [Car Payment/maint] in ledger" [ref=e214] [cursor=pointer]:
+            - generic [ref=e215]:
+              - generic [ref=e216]: Car Payment/maint
+              - generic [ref=e217]: $0.00 / $600.00 (0%)
+          - generic "Click to isolate [Food - Groceries] in ledger" [ref=e219] [cursor=pointer]:
+            - generic [ref=e220]:
+              - generic [ref=e221]: Food - Groceries
+              - generic [ref=e222]: $0.00 / $800.00 (0%)
+      - text: ⚙
+    - generic [ref=e224]:
+      - generic [ref=e225]:
+        - heading "> Active Ledger" [level=2] [ref=e226]
+        - generic [ref=e227]: "Filtered Sum: $2,785.13"
+      - generic [ref=e228]:
+        - searchbox "Search ledger entries" [ref=e229]
+        - combobox "Filter by Category" [ref=e230] [cursor=pointer]:
+          - option "All Categories" [selected]
+          - option "Housing ($1,600/mo)"
+          - option "Renters / Home Insurance ($15/mo)"
+          - option "Storage fees ($100/mo)"
+          - option "Gas ⛽ / Elec ⚡ ($320/mo)"
+          - option "Water 💦 ($100/mo)"
+          - option "Internet + 📱 ($224/mo)"
+          - option "Car Payment/maint ($600/mo)"
+          - option "Car insurance ($250/mo)"
+          - option "Car Registration ($15/mo)"
+          - option "Giving living ($700/mo)"
+          - option "DITTO ($500/mo)"
+          - option "Health ($80/mo)"
+          - option "Life Insurance ($50/mo)"
+          - option "Subscriptions ($43/mo)"
+          - option "Curriculum ($20/mo)"
+          - option "Co-op ($40/mo)"
+          - option "LTD Bundle ($90/mo)"
+          - option "Conferences/travel ($280/mo)"
+          - option "Info Sessions ($25/mo)"
+          - option "Team Meetings ($5/mo)"
+          - option "Other Books ($5/mo)"
+          - option "Food - Groceries ($800/mo)"
+          - option "Food - Out to Eat ($200/mo)"
+          - option "Gas - Car ($300/mo)"
+          - option "Entertainment ($100/mo)"
+          - option "Pets ($100/mo)"
+          - option "Stress Mgmt ($200/mo)"
+          - option "Personal Care ($20/mo)"
+          - option "Savings ($200/mo)"
+          - option "Business Seed Fund ($340/mo)"
+          - option "Hardware & Field Tech"
+          - option "Telecom & Cloud Infrastructure"
+          - option "Other"
+        - combobox "Filter by Date Window" [ref=e231] [cursor=pointer]:
+          - option "All Time" [selected]
+          - option "This Month"
+          - option "Last 30 Days"
+          - option "This Year"
+        - generic "Filter by Minimum and Maximum Amount" [ref=e232]:
+          - spinbutton "Min" [ref=e233]
+          - generic [ref=e234]: "-"
+          - spinbutton "Max" [ref=e235]
+      - generic [ref=e236]:
+        - generic [ref=e237] [cursor=pointer]: "🎯 #on-budget"
+        - generic [ref=e238] [cursor=pointer]: "🚨 #over-budget"
+        - generic [ref=e239] [cursor=pointer]: "✓ #under-budget"
+        - generic [ref=e240] [cursor=pointer]: "#telecom (3)"
+        - generic [ref=e241] [cursor=pointer]: "#housing (1)"
+        - generic [ref=e242] [cursor=pointer]: "#verified (1)"
+        - generic [ref=e243] [cursor=pointer]: "#cloud (2)"
+        - generic [ref=e244] [cursor=pointer]: "#ai (2)"
+        - generic [ref=e245] [cursor=pointer]: "#gcp (1)"
+        - generic [ref=e246] [cursor=pointer]: "#hardware (1)"
+        - generic [ref=e247] [cursor=pointer]: "#dev (1)"
+        - generic [ref=e248] [cursor=pointer]: "#voice (1)"
+        - generic [ref=e249] [cursor=pointer]: "#security (2)"
+        - generic [ref=e250] [cursor=pointer]: "#fips (1)"
+        - generic [ref=e251] [cursor=pointer]: "#domains (1)"
+        - generic [ref=e252] [cursor=pointer]: "#storage (1)"
+      - generic [ref=e253]:
+        - button "⚡ Auto-Separate by Keywords" [ref=e254] [cursor=pointer]
+        - button "✉ Gmail Harvester" [ref=e255] [cursor=pointer]
+        - button "⚡ Scraper HUD" [ref=e256] [cursor=pointer]
+        - button "⬇ CSV" [ref=e257] [cursor=pointer]
+        - button "⬇ JSON Backup" [ref=e258] [cursor=pointer]
+        - button "⬇ Briefing (.md)" [ref=e259] [cursor=pointer]
+        - button "⬆ Restore JSON" [ref=e260] [cursor=pointer]
+        - button "⚡ Demo Seed" [ref=e261] [cursor=pointer]
+        - button "🖨 Print" [ref=e262] [cursor=pointer]
+        - button "⚠ Purge All" [ref=e263] [cursor=pointer]
+      - generic [ref=e264]:
+        - generic [ref=e265]: "⚡ KEYWORDS:"
+        - button "🛒 Market (Groceries) (0)" [ref=e266] [cursor=pointer]:
+          - generic [ref=e267]: 🛒
+          - generic [ref=e268]: Market (Groceries)
+          - strong [ref=e269]: (0)
+        - button "🔧 Home Depot (Tools & Materials) (2)" [ref=e270] [cursor=pointer]:
+          - generic [ref=e271]: 🔧
+          - generic [ref=e272]: Home Depot (Tools & Materials)
+          - strong [ref=e273]: (2)
+        - button "⛽ Gas & Fuel (0)" [ref=e274] [cursor=pointer]:
+          - generic [ref=e275]: ⛽
+          - generic [ref=e276]: Gas & Fuel
+          - strong [ref=e277]: (0)
+        - button "🍔 Dining Out (0)" [ref=e278] [cursor=pointer]:
+          - generic [ref=e279]: 🍔
+          - generic [ref=e280]: Dining Out
+          - strong [ref=e281]: (0)
+        - button "🚗 Auto & Repair (0)" [ref=e282] [cursor=pointer]:
+          - generic [ref=e283]: 🚗
+          - generic [ref=e284]: Auto & Repair
+          - strong [ref=e285]: (0)
+        - button "☁ Telecom & Cloud (4)" [ref=e286] [cursor=pointer]:
+          - generic [ref=e287]: ☁
+          - generic [ref=e288]: Telecom & Cloud
+          - strong [ref=e289]: (4)
+      - generic [ref=e290]:
+        - generic [ref=e291]:
+          - button "☰ Unified Table" [ref=e292] [cursor=pointer]
+          - button "🗂 Category Cards Grid" [ref=e293] [cursor=pointer]
+        - generic [ref=e295]:
+          - text: "Viewing:"
+          - strong [ref=e296]: ALL TRANSMISSIONS (8 records)
+      - generic [ref=e297]:
+        - generic [ref=e298]:
+          - button "☰ All Pools (32)" [ref=e299] [cursor=pointer]:
+            - generic [ref=e300]: ☰
+            - generic [ref=e301]: All Pools (32)
+          - button "🏠 Fixed Living ($2,409)" [ref=e302] [cursor=pointer]:
+            - generic [ref=e303]: 🏠
+            - generic [ref=e304]: Fixed Living ($2,409)
+          - button "🚗 Transportation ($1,165)" [ref=e305] [cursor=pointer]:
+            - generic [ref=e306]: 🚗
+            - generic [ref=e307]: Transportation ($1,165)
+          - button "🤝 Family & Giving ($1,260)" [ref=e308] [cursor=pointer]:
+            - generic [ref=e309]: 🤝
+            - generic [ref=e310]: Family & Giving ($1,260)
+          - button "🛒 Variable Lifestyle ($1,520)" [ref=e311] [cursor=pointer]:
+            - generic [ref=e312]: 🛒
+            - generic [ref=e313]: Variable Lifestyle ($1,520)
+          - button "💼 Business & HTP ($405)" [ref=e314] [cursor=pointer]:
+            - generic [ref=e315]: 💼
+            - generic [ref=e316]: Business & HTP ($405)
+          - button "🎯 Wealth & Goals ($540)" [ref=e317] [cursor=pointer]:
+            - generic [ref=e318]: 🎯
+            - generic [ref=e319]: Wealth & Goals ($540)
+          - button "⚡ Telecom & Tech" [ref=e320] [cursor=pointer]:
+            - generic [ref=e321]: ⚡
+            - generic [ref=e322]: Telecom & Tech
+        - generic [ref=e323]:
+          - searchbox "Filter category tabs..." [ref=e325]
+          - button "🚀 Debt Avalanche" [ref=e326] [cursor=pointer]
+          - button "⇄ Reallocate" [ref=e327] [cursor=pointer]
+      - tablist "Filter by Category" [ref=e328]:
+        - button "☰ ALL TRANSMISSIONS 8 $6,982.00" [ref=e329] [cursor=pointer]:
+          - generic [ref=e330]: ☰ ALL TRANSMISSIONS
+          - generic [ref=e331]: "8"
+          - generic [ref=e332]: $6,982.00
+        - button "🏠 Housing 1 $1,600.00" [ref=e333] [cursor=pointer]:
+          - generic [ref=e334]: 🏠 Housing
+          - generic [ref=e335]: "1"
+          - generic [ref=e336]: $1,600.00
+        - button "🛡 Renters Ins 0 $15.00" [ref=e337] [cursor=pointer]:
+          - generic [ref=e338]: 🛡 Renters Ins
+          - generic [ref=e339]: "0"
+          - generic [ref=e340]: $15.00
+        - button "📦 Storage fees 0 $100.00" [ref=e341] [cursor=pointer]:
+          - generic [ref=e342]: 📦 Storage fees
+          - generic [ref=e343]: "0"
+          - generic [ref=e344]: $100.00
+        - button "⚡ Gas & Electric 0 $320.00" [ref=e345] [cursor=pointer]:
+          - generic [ref=e346]: ⚡ Gas & Electric
+          - generic [ref=e347]: "0"
+          - generic [ref=e348]: $320.00
+        - button "💦 Water 0 $100.00" [ref=e349] [cursor=pointer]:
+          - generic [ref=e350]: 💦 Water
+          - generic [ref=e351]: "0"
+          - generic [ref=e352]: $100.00
+        - button "📱 Internet + Phone 0 $224.00" [ref=e353] [cursor=pointer]:
+          - generic [ref=e354]: 📱 Internet + Phone
+          - generic [ref=e355]: "0"
+          - generic [ref=e356]: $224.00
+        - button "🔄 Subscriptions 1 $43.00" [ref=e357] [cursor=pointer]:
+          - generic [ref=e358]: 🔄 Subscriptions
+          - generic [ref=e359]: "1"
+          - generic [ref=e360]: $43.00
+        - button "⛽ Gas - Car 0 $300.00" [ref=e361] [cursor=pointer]:
+          - generic [ref=e362]: ⛽ Gas - Car
+          - generic [ref=e363]: "0"
+          - generic [ref=e364]: $300.00
+        - button "🚗 Car Payment 0 $600.00" [ref=e365] [cursor=pointer]:
+          - generic [ref=e366]: 🚗 Car Payment
+          - generic [ref=e367]: "0"
+          - generic [ref=e368]: $600.00
+        - button "📋 Car Insurance 0 $250.00" [ref=e369] [cursor=pointer]:
+          - generic [ref=e370]: 📋 Car Insurance
+          - generic [ref=e371]: "0"
+          - generic [ref=e372]: $250.00
+        - button "🏷 Car Reg 0 $15.00" [ref=e373] [cursor=pointer]:
+          - generic [ref=e374]: 🏷 Car Reg
+          - generic [ref=e375]: "0"
+          - generic [ref=e376]: $15.00
+        - button "🤝 Giving living 0 $700.00" [ref=e377] [cursor=pointer]:
+          - generic [ref=e378]: 🤝 Giving living
+          - generic [ref=e379]: "0"
+          - generic [ref=e380]: $700.00
+        - button "👨‍👩‍👧‍👦 DITTO 0 $500.00" [ref=e381] [cursor=pointer]:
+          - generic [ref=e382]: 👨‍👩‍👧‍👦 DITTO
+          - generic [ref=e383]: "0"
+          - generic [ref=e384]: $500.00
+        - button "📚 Curriculum 0 $20.00" [ref=e385] [cursor=pointer]:
+          - generic [ref=e386]: 📚 Curriculum
+          - generic [ref=e387]: "0"
+          - generic [ref=e388]: $20.00
+        - button "🚌 Co-op / Trips 0 $40.00" [ref=e389] [cursor=pointer]:
+          - generic [ref=e390]: 🚌 Co-op / Trips
+          - generic [ref=e391]: "0"
+          - generic [ref=e392]: $40.00
+        - button "🛒 Groceries 0 $800.00" [ref=e393] [cursor=pointer]:
+          - generic [ref=e394]: 🛒 Groceries
+          - generic [ref=e395]: "0"
+          - generic [ref=e396]: $800.00
+        - button "🍔 Out to Eat 0 $200.00" [ref=e397] [cursor=pointer]:
+          - generic [ref=e398]: 🍔 Out to Eat
+          - generic [ref=e399]: "0"
+          - generic [ref=e400]: $200.00
+        - button "🎟 Entertainment 0 $100.00" [ref=e401] [cursor=pointer]:
+          - generic [ref=e402]: 🎟 Entertainment
+          - generic [ref=e403]: "0"
+          - generic [ref=e404]: $100.00
+        - button "🐾 Pets 0 $100.00" [ref=e405] [cursor=pointer]:
+          - generic [ref=e406]: 🐾 Pets
+          - generic [ref=e407]: "0"
+          - generic [ref=e408]: $100.00
+        - button "🧘 Stress Mgmt 0 $200.00" [ref=e409] [cursor=pointer]:
+          - generic [ref=e410]: 🧘 Stress Mgmt
+          - generic [ref=e411]: "0"
+          - generic [ref=e412]: $200.00
+        - button "💆 Personal Care 0 $20.00" [ref=e413] [cursor=pointer]:
+          - generic [ref=e414]: 💆 Personal Care
+          - generic [ref=e415]: "0"
+          - generic [ref=e416]: $20.00
+        - button "💊 Health Care 0 $80.00" [ref=e417] [cursor=pointer]:
+          - generic [ref=e418]: 💊 Health Care
+          - generic [ref=e419]: "0"
+          - generic [ref=e420]: $80.00
+        - button "📜 Life Ins 0 $50.00" [ref=e421] [cursor=pointer]:
+          - generic [ref=e422]: 📜 Life Ins
+          - generic [ref=e423]: "0"
+          - generic [ref=e424]: $50.00
+        - button "💼 LTD Bundle 0 $90.00" [ref=e425] [cursor=pointer]:
+          - generic [ref=e426]: 💼 LTD Bundle
+          - generic [ref=e427]: "0"
+          - generic [ref=e428]: $90.00
+        - button "✈ Conferences 0 $280.00" [ref=e429] [cursor=pointer]:
+          - generic [ref=e430]: ✈ Conferences
+          - generic [ref=e431]: "0"
+          - generic [ref=e432]: $280.00
+        - button "🎙 Info Sessions 0 $25.00" [ref=e433] [cursor=pointer]:
+          - generic [ref=e434]: 🎙 Info Sessions
+          - generic [ref=e435]: "0"
+          - generic [ref=e436]: $25.00
+        - button "👥 Team Meetings 0 $5.00" [ref=e437] [cursor=pointer]:
+          - generic [ref=e438]: 👥 Team Meetings
+          - generic [ref=e439]: "0"
+          - generic [ref=e440]: $5.00
+        - button "📖 Books/Materials 0 $5.00" [ref=e441] [cursor=pointer]:
+          - generic [ref=e442]: 📖 Books/Materials
+          - generic [ref=e443]: "0"
+          - generic [ref=e444]: $5.00
+        - button "💰 Personal Savings 0 $200.00" [ref=e445] [cursor=pointer]:
+          - generic [ref=e446]: 💰 Personal Savings
+          - generic [ref=e447]: "0"
+          - generic [ref=e448]: $200.00
+        - button "🌱 Seed Fund 0 $340.00" [ref=e449] [cursor=pointer]:
+          - generic [ref=e450]: 🌱 Seed Fund
+          - generic [ref=e451]: "0"
+          - generic [ref=e452]: $340.00
+        - button "🔧 Tools, Materials & Hardware 0 $250.00" [ref=e453] [cursor=pointer]:
+          - generic [ref=e454]: 🔧 Tools, Materials & Hardware
+          - generic [ref=e455]: "0"
+          - generic [ref=e456]: $250.00
+        - button "☁ Telecom & Cloud 0 $250.00" [ref=e457] [cursor=pointer]:
+          - generic [ref=e458]: ☁ Telecom & Cloud
+          - generic [ref=e459]: "0"
+          - generic [ref=e460]: $250.00
+        - button "📁 Other Miscellaneous 0 $100.00" [ref=e461] [cursor=pointer]:
+          - generic [ref=e462]: 📁 Other Miscellaneous
+          - generic [ref=e463]: "0"
+          - generic [ref=e464]: $100.00
+      - table "Purchase ledger" [ref=e466]:
+        - rowgroup [ref=e467]:
+          - row [ref=e468]:
+            - columnheader [ref=e469]:
+              - checkbox "Select All On Page" [ref=e470]
+            - columnheader "Date▼" [ref=e471] [cursor=pointer]:
+              - text: Date
+              - generic [ref=e472]: ▼
+            - columnheader "Designation" [ref=e473]
+            - columnheader "Vendor" [ref=e474]
+            - columnheader "Cat" [ref=e475]
+            - columnheader "Amount◆" [ref=e476] [cursor=pointer]:
+              - text: Amount
+              - generic [ref=e477]: ◆
+            - columnheader "Actions" [ref=e478]
+        - rowgroup [ref=e479]:
+          - row [ref=e480] [cursor=pointer]:
+            - cell [ref=e481]:
+              - checkbox [ref=e482]
+            - cell "2026-09-03" [ref=e483]
+            - 'cell "Monthly Apartment Rent // [VND: Apartment Leasing Office | SEC: Housing | CYCLE: SEP 2026] #telecom #housing #verified" [ref=e484]':
+              - generic [ref=e485]: Monthly Apartment Rent
+              - 'generic "[VND: Apartment Leasing Office | SEC: Housing | CYCLE: SEP 2026] #telecom #housing #verified" [ref=e486]': "// [VND: Apartment Leasing Office | SEC: Housing | CYCLE: SEP 2026] #telecom #housing #verified"
+            - cell "Apartment Leasing Office" [ref=e487]
+            - cell [ref=e488]:
+              - text: Housing
+              - button "▾" [ref=e489]
+            - cell "$1,600.00 ⚡ SPIKE" [ref=e490]:
+              - text: $1,600.00
+              - 'generic "High-variance outlay: 12.3x above median ticket" [ref=e491]': ⚡ SPIKE
+            - cell [ref=e492]:
+              - generic [ref=e493]:
+                - button "EDIT" [ref=e494]
+                - button "PURGE" [ref=e495]
+          - row [ref=e496] [cursor=pointer]:
+            - cell [ref=e497]:
+              - checkbox [ref=e498]
+            - cell "2026-09-03" [ref=e499]
+            - 'cell "Google Cloud Platform (Gemini API & Vertex AI) // nctelecomtech AI pipeline token billing #cloud #ai #gcp" [ref=e500]':
+              - generic [ref=e501]: Google Cloud Platform (Gemini API & Vertex AI)
+              - 'generic "nctelecomtech AI pipeline token billing #cloud #ai #gcp" [ref=e502]': "// nctelecomtech AI pipeline token billing #cloud #ai #gcp"
+            - cell "Google Cloud" [ref=e503]
+            - cell [ref=e504]:
+              - text: Services
+              - button "▾" [ref=e505]
+            - cell "$248.50" [ref=e506]
+            - cell [ref=e507]:
+              - generic [ref=e508]:
+                - button "EDIT" [ref=e509]
+                - button "PURGE" [ref=e510]
+          - row [ref=e511] [cursor=pointer]:
+            - cell [ref=e512]:
+              - checkbox [ref=e513]
+            - cell "2026-09-01" [ref=e514]
+            - 'cell "Fiber Optic Fusion Splicer & Cleaver Kit // Field telecom fiber installation hardware #telecom #hardware" [ref=e515]':
+              - generic [ref=e516]: Fiber Optic Fusion Splicer & Cleaver Kit
+              - 'generic "Field telecom fiber installation hardware #telecom #hardware" [ref=e517]': "// Field telecom fiber installation hardware #telecom #hardware"
+            - cell "Digikey Electronics" [ref=e518]
+            - cell [ref=e519]:
+              - text: Hardware
+              - button "▾" [ref=e520]
+            - cell "$485.00 ⚡ SPIKE" [ref=e521]:
+              - text: $485.00
+              - 'generic "High-variance outlay: 3.7x above median ticket" [ref=e522]': ⚡ SPIKE
+            - cell [ref=e523]:
+              - generic [ref=e524]:
+                - button "EDIT" [ref=e525]
+                - button "PURGE" [ref=e526]
+          - row [ref=e527] [cursor=pointer]:
+            - cell [ref=e528]:
+              - checkbox [ref=e529]
+            - cell "2026-08-30" [ref=e530]
+            - 'cell "GitHub Organization & Copilot Seats // Q3 engineering seat license #dev #ai" [ref=e531]':
+              - generic [ref=e532]: GitHub Organization & Copilot Seats
+              - 'generic "Q3 engineering seat license #dev #ai" [ref=e533]': "// Q3 engineering seat license #dev #ai"
+            - cell "GitHub" [ref=e534]
+            - cell [ref=e535]:
+              - text: Subscriptions
+              - button "▾" [ref=e536]
+            - cell "$64.00" [ref=e537]
+            - cell [ref=e538]:
+              - generic [ref=e539]:
+                - button "EDIT" [ref=e540]
+                - button "PURGE" [ref=e541]
+          - row [ref=e542] [cursor=pointer]:
+            - cell [ref=e543]:
+              - checkbox [ref=e544]
+            - cell "2026-08-26" [ref=e545]
+            - 'cell "Twilio Elastic SIP Trunking & Voice Relay // Telecom PBX voice routing and SMS gateway #telecom #voice" [ref=e546]':
+              - generic [ref=e547]: Twilio Elastic SIP Trunking & Voice Relay
+              - 'generic "Telecom PBX voice routing and SMS gateway #telecom #voice" [ref=e548]': "// Telecom PBX voice routing and SMS gateway #telecom #voice"
+            - cell "Twilio" [ref=e549]
+            - cell [ref=e550]:
+              - text: Services
+              - button "▾" [ref=e551]
+            - cell "$118.25" [ref=e552]
+            - cell [ref=e553]:
+              - generic [ref=e554]:
+                - button "EDIT" [ref=e555]
+                - button "PURGE" [ref=e556]
+          - row [ref=e557] [cursor=pointer]:
+            - cell [ref=e558]:
+              - checkbox [ref=e559]
+            - cell "2026-08-20" [ref=e560]
+            - 'cell "Quantum YubiKey 5C FIPS Dual Token // Hardware MFA keys for telecom admin #security #fips" [ref=e561]':
+              - generic [ref=e562]: Quantum YubiKey 5C FIPS Dual Token
+              - 'generic "Hardware MFA keys for telecom admin #security #fips" [ref=e563]': "// Hardware MFA keys for telecom admin #security #fips"
+            - cell "Yubico" [ref=e564]
+            - cell [ref=e565]:
+              - text: Hardware
+              - button "▾" [ref=e566]
+            - cell "$130.00" [ref=e567]
+            - cell [ref=e568]:
+              - generic [ref=e569]:
+                - button "EDIT" [ref=e570]
+                - button "PURGE" [ref=e571]
+          - row [ref=e572] [cursor=pointer]:
+            - cell [ref=e573]:
+              - checkbox [ref=e574]
+            - cell "2026-08-16" [ref=e575]
+            - 'cell "Namecheap DNS Security & Wildcard SSL // 2-year renewal with privacy guard #security #domains" [ref=e576]':
+              - generic [ref=e577]: Namecheap DNS Security & Wildcard SSL
+              - 'generic "2-year renewal with privacy guard #security #domains" [ref=e578]': "// 2-year renewal with privacy guard #security #domains"
+            - cell "Namecheap" [ref=e579]
+            - cell [ref=e580]:
+              - text: Software
+              - button "▾" [ref=e581]
+            - cell "$49.98" [ref=e582]
+            - cell [ref=e583]:
+              - generic [ref=e584]:
+                - button "EDIT" [ref=e585]
+                - button "PURGE" [ref=e586]
+          - row [ref=e587] [cursor=pointer]:
+            - cell [ref=e588]:
+              - checkbox [ref=e589]
+            - cell "2026-08-10" [ref=e590]
+            - 'cell "AWS S3 Cold Storage & CloudFront CDN // Telemetry log archives and asset CDN #cloud #storage" [ref=e591]':
+              - generic [ref=e592]: AWS S3 Cold Storage & CloudFront CDN
+              - 'generic "Telemetry log archives and asset CDN #cloud #storage" [ref=e593]': "// Telemetry log archives and asset CDN #cloud #storage"
+            - cell "Amazon Web Services" [ref=e594]
+            - cell [ref=e595]:
+              - text: Services
+              - button "▾" [ref=e596]
+            - cell "$89.40" [ref=e597]
+            - cell [ref=e598]:
+              - generic [ref=e599]:
+                - button "EDIT" [ref=e600]
+                - button "PURGE" [ref=e601]
+      - generic [ref=e602]:
+        - generic [ref=e603]:
+          - generic [ref=e604]: "Rows per page:"
+          - combobox [ref=e605] [cursor=pointer]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "All"
+          - generic [ref=e606]: Showing 1-8 of 8
+        - generic [ref=e607]:
+          - button "« Prev" [disabled] [ref=e608]
+          - generic [ref=e609]: Page 1 of 1
+          - button "Next »" [disabled] [ref=e610]
+      - generic [ref=e611]: "Shortcuts: Ctrl+V Paste Receipt/Statement | Ctrl+K Search | Alt+N New Entry | Esc Close Modals / Reset"
+      - text: ⚙
+  - status:
+    - generic: TRANSMISSION PURGED
+    - button "↩ UNDO"
+  - complementary [aria-hidden] [ref=e612]:
+    - generic [ref=e613]:
+      - generic [ref=e614]:
+        - generic [ref=e615]: 🔍
+        - heading [level=3] [ref=e616]: TRANSMISSION AUDIT
+      - button [ref=e617] [cursor=pointer]: ×
+    - generic [ref=e618]:
+      - generic [ref=e619]: Transmission UUID
+      - generic [ref=e620]: "--"
+    - generic [ref=e621]:
+      - generic [ref=e622]: Timestamp & Date
+      - generic [ref=e623]: "--"
+    - generic [ref=e624]:
+      - generic [ref=e625]: Designation / Description
+      - generic [ref=e626]: "--"
+    - generic [ref=e627]:
+      - generic [ref=e628]: Counterparty / Vendor
+      - generic [ref=e629]: "--"
+    - generic [ref=e630]:
+      - generic [ref=e631]: Category Allocation
+      - generic [ref=e632]:
+        - generic [ref=e633]: "--"
+        - generic [ref=e634]: "Pool: $0.00"
+    - generic [ref=e635]:
+      - generic [ref=e636]: Outlay Value
+      - generic [ref=e637]: "--"
+    - generic [ref=e638]:
+      - generic [ref=e639]: Telemetry & Anomaly Status
+      - generic [ref=e640]: Standard Outlay
+    - generic [ref=e641]:
+      - generic [ref=e642]: Notes & Tags
+      - generic [ref=e643]: "--"
+    - generic [ref=e644]:
+      - button [ref=e645] [cursor=pointer]: ✎ Edit Entry
+      - button [ref=e646] [cursor=pointer]: Purge

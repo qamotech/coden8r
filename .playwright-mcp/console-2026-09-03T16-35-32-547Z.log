@@ -1,0 +1,4 @@
+[     464ms] ReferenceError: Cannot access 'MASTER_CATEGORIES' before initialization
+    at renderCategoryBreakdown (http://localhost:8095/PrimeLedger.html:7044:29)
+    at updateUI (http://localhost:8095/PrimeLedger.html:6587:13)
+    at http://localhost:8095/PrimeLedger.html:4987:9

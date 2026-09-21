@@ -1,0 +1,5 @@
+[     535ms] ReferenceError: remaining is not defined
+    at updateBudgetSentinel (http://127.0.0.1:8096/PrimeLedger.html:7757:127)
+    at calculateAllMetrics (http://127.0.0.1:8096/PrimeLedger.html:7740:13)
+    at updateUI (http://127.0.0.1:8096/PrimeLedger.html:7272:13)
+    at http://127.0.0.1:8096/PrimeLedger.html:5553:9

@@ -1,0 +1,436 @@
+- generic [active] [ref=f1e1]:
+  - banner [ref=f1e2]:
+    - generic [ref=f1e3]:
+      - generic "Nexus Cybertronian Core Array" [ref=f1e4]
+      - generic [ref=f1e13]:
+        - heading "PRIME LEDGER" [level=1] [ref=f1e14]
+        - generic [ref=f1e15]: Cyber-Matrix Bio-Data Array // Node 01
+    - generic "Entity Telemetry Status" [ref=f1e17]:
+      - generic [ref=f1e18]:
+        - generic [ref=f1e19]: O O
+        - generic [ref=f1e20]: O
+    - generic [ref=f1e21]:
+      - combobox "Active Financial Currency" [ref=f1e22] [cursor=pointer]:
+        - option "USD ($)" [selected]
+        - option "EUR (€)"
+        - option "GBP (£)"
+        - option "CAD (CA$)"
+        - option "JPY (¥)"
+      - 'button "⚡ ZERO-BASED BUDGET: +$18.00 NET" [ref=f1e23] [cursor=pointer]':
+        - text: "⚡ ZERO-BASED BUDGET:"
+        - generic [ref=f1e24]: +$18.00 NET
+      - 'button "✉ GMAIL: nctelecomtech@gmail.com" [ref=f1e25] [cursor=pointer]'
+      - 'button "🔇 AUDIO: OFF" [ref=f1e26] [cursor=pointer]'
+  - region "Tactical Alert Deck" [ref=f1e27]:
+    - generic [ref=f1e28]:
+      - generic [ref=f1e29]: 🚨
+      - generic [ref=f1e30]:
+        - generic [ref=f1e31]: CRITICAL DEBT ALERT // 26.00% APR ON CREDIT CARD 1
+        - generic [ref=f1e32]: Current balance of $3450.00 drains approximately $74.75/month in pure interest. Prioritize allocating your monthly surplus ($18.00) to extinguish this balance first.
+      - button "View Debt Plan" [ref=f1e33] [cursor=pointer]
+  - region "Monthly Budget Sentinel" [ref=f1e34]:
+    - generic [ref=f1e35]:
+      - generic [ref=f1e36]:
+        - generic [ref=f1e37]: "🛡 BUDGET SENTINEL:"
+        - generic [ref=f1e38]: NORMAL // 0.0% OF ALLOCATION CONSUMED
+      - generic [ref=f1e39]:
+        - 'button "Mode: Full ($6982.00)" [ref=f1e40] [cursor=pointer]'
+        - button "⚙ Tactical Budget Matrix" [ref=f1e41] [cursor=pointer]
+    - generic [ref=f1e43]:
+      - generic [ref=f1e44]: "Spent: $0.00 / Target: $6982.00 [Full ($6,982)]"
+      - generic [ref=f1e45]: "Remaining: $6982.00"
+  - region "Financial Telemetry" [ref=f1e46]:
+    - generic [ref=f1e47]:
+      - generic [ref=f1e48]: ⚡ Total Outlay
+      - generic [ref=f1e49]: $0.00
+      - generic [ref=f1e50]: 0 transmissions logged
+    - generic [ref=f1e51]:
+      - generic [ref=f1e52]:
+        - generic [ref=f1e53]: 🍄 Month-to-Date
+        - generic [ref=f1e54]: 0% vs prior
+      - generic [ref=f1e55]: $0.00
+      - generic [ref=f1e56]: Current cycle burn
+    - generic [ref=f1e57]:
+      - generic [ref=f1e58]: ⚙ Average Outlay
+      - generic [ref=f1e59]: $0.00
+      - generic [ref=f1e60]: Per transmission
+    - generic [ref=f1e61]:
+      - generic [ref=f1e62]: ▲ Peak Transmission
+      - generic [ref=f1e63]: $0.00
+      - generic [ref=f1e64]: None recorded
+  - button "📊 DEEP FINANCIAL TELEMETRY DRAWER (VELOCITY, MEDIAN, COUNTERPARTIES) ▼" [ref=f1e65] [cursor=pointer]:
+    - generic [ref=f1e66]: 📊 DEEP FINANCIAL TELEMETRY DRAWER (VELOCITY, MEDIAN, COUNTERPARTIES)
+    - generic [ref=f1e67]: ▼
+  - generic [ref=f1e68]:
+    - heading "// 30-Day Spending Velocity Timeline HOVER BARS FOR TELEMETRY" [level=3] [ref=f1e70]:
+      - generic [ref=f1e71]: // 30-Day Spending Velocity Timeline
+      - generic [ref=f1e72]: HOVER BARS FOR TELEMETRY
+    - heading "// Category Donut Matrix HOVER SLICES FOR SHARE" [level=3] [ref=f1e76]:
+      - generic [ref=f1e77]: // Category Donut Matrix
+      - generic [ref=f1e78]: HOVER SLICES FOR SHARE
+  - generic [ref=f1e81]:
+    - generic [ref=f1e82]:
+      - heading "> Log Transmission" [level=2] [ref=f1e83]
+      - generic [ref=f1e85] [cursor=pointer]:
+        - generic [ref=f1e86]: 🍄
+        - generic [ref=f1e87]: OPTICAL & STATEMENT INGESTION
+        - generic [ref=f1e88]: Drop Receipt Photo, Bank Statement PDF/CSV, or Press Ctrl+V to Paste Screenshot
+        - generic [ref=f1e89]:
+          - button "📁 Select File" [ref=f1e90]
+          - button "📋 Paste Text" [ref=f1e91]
+          - button "✉ Gmail Harvester" [ref=f1e92]
+      - generic [ref=f1e93]:
+        - generic [ref=f1e94]: "Designation (Item):"
+        - textbox "Designation (Item):" [ref=f1e95]:
+          - /placeholder: e.g. Server Hosting
+        - generic [ref=f1e96]: "Source (Vendor):"
+        - combobox "Source (Vendor):" [ref=f1e97]
+        - generic [ref=f1e98]: "Category:"
+        - combobox "Category:" [ref=f1e99] [cursor=pointer]:
+          - option "Housing ($1,600.00/mo)"
+          - option "Renters / Home Insurance ($15.00/mo)"
+          - option "Storage fees ($100.00/mo)"
+          - option "Gas ⛽ / Elec ⚡ ($320.00/mo)"
+          - option "Water 💦 ($100.00/mo)"
+          - option "Internet + 📱 ($224.00/mo)"
+          - option "Car Payment/maint ($600.00/mo)"
+          - option "Car insurance ($250.00/mo)"
+          - option "Car Registration ($15.00/mo)"
+          - option "Giving living ($700.00/mo)"
+          - option "DITTO (keep $$ in family) ($500.00/mo)"
+          - option "Health (insurance, etc) ($80.00/mo)"
+          - option "Life Insurance ($50.00/mo)"
+          - option "Subscriptions ($43.00/mo)"
+          - option "Curriculum ($20.00/mo)"
+          - option "Co-op / field trips ($40.00/mo)"
+          - option "LTD Bundle ($90.00/mo)"
+          - option "Conferences/travel ($280.00/mo)"
+          - option "Info Sessions ($25.00/mo)"
+          - option "Team Meetings ($5.00/mo)"
+          - option "Other -(Books, etc) ($5.00/mo)"
+          - option "Food - Groceries ($800.00/mo)" [selected]
+          - option "Food - Out to Eat ($200.00/mo)"
+          - option "Gas - Car ($300.00/mo)"
+          - option "Entertainment ($100.00/mo)"
+          - option "Pets (food/litter) ($100.00/mo)"
+          - option "Stress Mgmt ($200.00/mo)"
+          - option "Personal Care ($20.00/mo)"
+          - option "Savings (Personal) ($200.00/mo)"
+          - option "Business Seed Fund ($340.00/mo)"
+          - option "Hardware & Field Tech"
+          - option "Telecom & Cloud Infrastructure"
+          - option "Other"
+        - generic [ref=f1e100]: "Value ($):"
+        - spinbutton "Value ($):" [ref=f1e101]
+        - generic [ref=f1e102]:
+          - generic [ref=f1e103]: "Timestamp:"
+          - generic [ref=f1e104]:
+            - button "Today" [ref=f1e105] [cursor=pointer]
+            - button "Yesterday" [ref=f1e106] [cursor=pointer]
+            - button "-7d" [ref=f1e107] [cursor=pointer]
+        - textbox "Timestamp:" [ref=f1e108]: 2026-09-03
+        - generic [ref=f1e109]: "Tactical Notes & #Tags (Optional):"
+        - 'textbox "Tactical Notes & #Tags (Optional):" [ref=f1e110]':
+          - /placeholder: "Invoice #, account tag (e.g. #tax, #reimbursable, #nexus)..."
+        - button "Execute Entry" [ref=f1e112] [cursor=pointer]
+      - generic [ref=f1e113]:
+        - generic [ref=f1e114]:
+          - generic [ref=f1e115]: "🔁 RECURRING COMMITMENT:"
+          - generic [ref=f1e116]: $0.00/mo
+        - generic [ref=f1e117]:
+          - generic [ref=f1e118]: "Projected Annual Run-Rate (ARR):"
+          - strong [ref=f1e119]: $0.00/yr
+      - generic [ref=f1e120]:
+        - heading "// Spend Distribution" [level=3] [ref=f1e121]
+        - generic [ref=f1e122]:
+          - generic "Click to isolate [Housing] in ledger" [ref=f1e123] [cursor=pointer]:
+            - generic [ref=f1e124]:
+              - generic [ref=f1e125]: Housing
+              - generic [ref=f1e126]: $0.00 / $1600.00 (0%)
+          - generic "Click to isolate [Internet + 📱] in ledger" [ref=f1e128] [cursor=pointer]:
+            - generic [ref=f1e129]:
+              - generic [ref=f1e130]: Internet + 📱
+              - generic [ref=f1e131]: $0.00 / $224.00 (0%)
+          - generic "Click to isolate [Subscriptions] in ledger" [ref=f1e133] [cursor=pointer]:
+            - generic [ref=f1e134]:
+              - generic [ref=f1e135]: Subscriptions
+              - generic [ref=f1e136]: $0.00 / $43.00 (0%)
+          - generic "Click to isolate [Gas - Car] in ledger" [ref=f1e138] [cursor=pointer]:
+            - generic [ref=f1e139]:
+              - generic [ref=f1e140]: Gas - Car
+              - generic [ref=f1e141]: $0.00 / $300.00 (0%)
+          - generic "Click to isolate [Car Payment/maint] in ledger" [ref=f1e143] [cursor=pointer]:
+            - generic [ref=f1e144]:
+              - generic [ref=f1e145]: Car Payment/maint
+              - generic [ref=f1e146]: $0.00 / $600.00 (0%)
+          - generic "Click to isolate [Food - Groceries] in ledger" [ref=f1e148] [cursor=pointer]:
+            - generic [ref=f1e149]:
+              - generic [ref=f1e150]: Food - Groceries
+              - generic [ref=f1e151]: $0.00 / $800.00 (0%)
+      - text: ⚙
+    - generic [ref=f1e153]:
+      - generic [ref=f1e154]:
+        - heading "> Active Ledger" [level=2] [ref=f1e155]
+        - generic [ref=f1e156]: "Filtered Sum: $0.00"
+      - generic [ref=f1e157]:
+        - searchbox "Search ledger entries" [ref=f1e158]
+        - combobox "Filter by Category" [ref=f1e159] [cursor=pointer]:
+          - option "All Categories" [selected]
+          - option "Housing ($1,600/mo)"
+          - option "Renters / Home Insurance ($15/mo)"
+          - option "Storage fees ($100/mo)"
+          - option "Gas ⛽ / Elec ⚡ ($320/mo)"
+          - option "Water 💦 ($100/mo)"
+          - option "Internet + 📱 ($224/mo)"
+          - option "Car Payment/maint ($600/mo)"
+          - option "Car insurance ($250/mo)"
+          - option "Car Registration ($15/mo)"
+          - option "Giving living ($700/mo)"
+          - option "DITTO ($500/mo)"
+          - option "Health ($80/mo)"
+          - option "Life Insurance ($50/mo)"
+          - option "Subscriptions ($43/mo)"
+          - option "Curriculum ($20/mo)"
+          - option "Co-op ($40/mo)"
+          - option "LTD Bundle ($90/mo)"
+          - option "Conferences/travel ($280/mo)"
+          - option "Info Sessions ($25/mo)"
+          - option "Team Meetings ($5/mo)"
+          - option "Other Books ($5/mo)"
+          - option "Food - Groceries ($800/mo)"
+          - option "Food - Out to Eat ($200/mo)"
+          - option "Gas - Car ($300/mo)"
+          - option "Entertainment ($100/mo)"
+          - option "Pets ($100/mo)"
+          - option "Stress Mgmt ($200/mo)"
+          - option "Personal Care ($20/mo)"
+          - option "Savings ($200/mo)"
+          - option "Business Seed Fund ($340/mo)"
+          - option "Hardware & Field Tech"
+          - option "Telecom & Cloud Infrastructure"
+          - option "Other"
+        - combobox "Filter by Date Window" [ref=f1e160] [cursor=pointer]:
+          - option "All Time" [selected]
+          - option "This Month"
+          - option "Last 30 Days"
+          - option "This Year"
+        - generic "Filter by Minimum and Maximum Amount" [ref=f1e161]:
+          - spinbutton "Min" [ref=f1e162]
+          - generic [ref=f1e163]: "-"
+          - spinbutton "Max" [ref=f1e164]
+      - generic [ref=f1e165]:
+        - button "✉ Gmail Harvester" [ref=f1e166] [cursor=pointer]
+        - button "⚡ Scraper HUD" [ref=f1e167] [cursor=pointer]
+        - button "⬇ CSV" [ref=f1e168] [cursor=pointer]
+        - button "⬇ JSON Backup" [ref=f1e169] [cursor=pointer]
+        - button "⬆ Restore JSON" [ref=f1e170] [cursor=pointer]
+        - button "⚡ Demo Seed" [ref=f1e171] [cursor=pointer]
+        - button "🖨 Print" [ref=f1e172] [cursor=pointer]
+        - button "⚠ Purge All" [ref=f1e173] [cursor=pointer]
+      - generic [ref=f1e174]:
+        - generic [ref=f1e175]:
+          - button "☰ Unified Table" [ref=f1e176] [cursor=pointer]
+          - button "🗂 Category Cards Grid" [ref=f1e177] [cursor=pointer]
+        - generic [ref=f1e179]:
+          - text: "Viewing:"
+          - strong [ref=f1e180]: ALL TRANSMISSIONS (0 records)
+      - generic [ref=f1e181]:
+        - generic [ref=f1e182]:
+          - button "☰ All Pools (32)" [ref=f1e183] [cursor=pointer]:
+            - generic [ref=f1e184]: ☰
+            - generic [ref=f1e185]: All Pools (32)
+          - button "🏠 Fixed Living ($2,409)" [ref=f1e186] [cursor=pointer]:
+            - generic [ref=f1e187]: 🏠
+            - generic [ref=f1e188]: Fixed Living ($2,409)
+          - button "🚗 Transportation ($1,165)" [ref=f1e189] [cursor=pointer]:
+            - generic [ref=f1e190]: 🚗
+            - generic [ref=f1e191]: Transportation ($1,165)
+          - button "🤝 Family & Giving ($1,260)" [ref=f1e192] [cursor=pointer]:
+            - generic [ref=f1e193]: 🤝
+            - generic [ref=f1e194]: Family & Giving ($1,260)
+          - button "🛒 Variable Lifestyle ($1,520)" [ref=f1e195] [cursor=pointer]:
+            - generic [ref=f1e196]: 🛒
+            - generic [ref=f1e197]: Variable Lifestyle ($1,520)
+          - button "💼 Business & HTP ($405)" [ref=f1e198] [cursor=pointer]:
+            - generic [ref=f1e199]: 💼
+            - generic [ref=f1e200]: Business & HTP ($405)
+          - button "🎯 Wealth & Goals ($540)" [ref=f1e201] [cursor=pointer]:
+            - generic [ref=f1e202]: 🎯
+            - generic [ref=f1e203]: Wealth & Goals ($540)
+          - button "⚡ Telecom & Tech" [ref=f1e204] [cursor=pointer]:
+            - generic [ref=f1e205]: ⚡
+            - generic [ref=f1e206]: Telecom & Tech
+        - generic [ref=f1e207]:
+          - searchbox "Filter category tabs..." [ref=f1e209]
+          - button "🚀 Debt Avalanche" [ref=f1e210] [cursor=pointer]
+          - button "⇄ Reallocate" [ref=f1e211] [cursor=pointer]
+      - tablist "Filter by Category" [ref=f1e212]:
+        - button "☰ ALL TRANSMISSIONS 0 $6982.00" [ref=f1e213] [cursor=pointer]:
+          - generic [ref=f1e214]: ☰ ALL TRANSMISSIONS
+          - generic [ref=f1e215]: "0"
+          - generic [ref=f1e216]: $6982.00
+        - button "🏠 Housing 0 $1600.00" [ref=f1e217] [cursor=pointer]:
+          - generic [ref=f1e218]: 🏠 Housing
+          - generic [ref=f1e219]: "0"
+          - generic [ref=f1e220]: $1600.00
+        - button "🛡 Renters Ins 0 $15.00" [ref=f1e221] [cursor=pointer]:
+          - generic [ref=f1e222]: 🛡 Renters Ins
+          - generic [ref=f1e223]: "0"
+          - generic [ref=f1e224]: $15.00
+        - button "📦 Storage fees 0 $100.00" [ref=f1e225] [cursor=pointer]:
+          - generic [ref=f1e226]: 📦 Storage fees
+          - generic [ref=f1e227]: "0"
+          - generic [ref=f1e228]: $100.00
+        - button "⚡ Gas & Electric 0 $320.00" [ref=f1e229] [cursor=pointer]:
+          - generic [ref=f1e230]: ⚡ Gas & Electric
+          - generic [ref=f1e231]: "0"
+          - generic [ref=f1e232]: $320.00
+        - button "💦 Water 0 $100.00" [ref=f1e233] [cursor=pointer]:
+          - generic [ref=f1e234]: 💦 Water
+          - generic [ref=f1e235]: "0"
+          - generic [ref=f1e236]: $100.00
+        - button "📱 Internet + Phone 0 $224.00" [ref=f1e237] [cursor=pointer]:
+          - generic [ref=f1e238]: 📱 Internet + Phone
+          - generic [ref=f1e239]: "0"
+          - generic [ref=f1e240]: $224.00
+        - button "🔄 Subscriptions 0 $43.00" [ref=f1e241] [cursor=pointer]:
+          - generic [ref=f1e242]: 🔄 Subscriptions
+          - generic [ref=f1e243]: "0"
+          - generic [ref=f1e244]: $43.00
+        - button "⛽ Gas - Car 0 $300.00" [ref=f1e245] [cursor=pointer]:
+          - generic [ref=f1e246]: ⛽ Gas - Car
+          - generic [ref=f1e247]: "0"
+          - generic [ref=f1e248]: $300.00
+        - button "🚗 Car Payment 0 $600.00" [ref=f1e249] [cursor=pointer]:
+          - generic [ref=f1e250]: 🚗 Car Payment
+          - generic [ref=f1e251]: "0"
+          - generic [ref=f1e252]: $600.00
+        - button "📋 Car Insurance 0 $250.00" [ref=f1e253] [cursor=pointer]:
+          - generic [ref=f1e254]: 📋 Car Insurance
+          - generic [ref=f1e255]: "0"
+          - generic [ref=f1e256]: $250.00
+        - button "🏷 Car Reg 0 $15.00" [ref=f1e257] [cursor=pointer]:
+          - generic [ref=f1e258]: 🏷 Car Reg
+          - generic [ref=f1e259]: "0"
+          - generic [ref=f1e260]: $15.00
+        - button "🤝 Giving living 0 $700.00" [ref=f1e261] [cursor=pointer]:
+          - generic [ref=f1e262]: 🤝 Giving living
+          - generic [ref=f1e263]: "0"
+          - generic [ref=f1e264]: $700.00
+        - button "👨‍👩‍👧‍👦 DITTO 0 $500.00" [ref=f1e265] [cursor=pointer]:
+          - generic [ref=f1e266]: 👨‍👩‍👧‍👦 DITTO
+          - generic [ref=f1e267]: "0"
+          - generic [ref=f1e268]: $500.00
+        - button "📚 Curriculum 0 $20.00" [ref=f1e269] [cursor=pointer]:
+          - generic [ref=f1e270]: 📚 Curriculum
+          - generic [ref=f1e271]: "0"
+          - generic [ref=f1e272]: $20.00
+        - button "🚌 Co-op / Trips 0 $40.00" [ref=f1e273] [cursor=pointer]:
+          - generic [ref=f1e274]: 🚌 Co-op / Trips
+          - generic [ref=f1e275]: "0"
+          - generic [ref=f1e276]: $40.00
+        - button "🛒 Groceries 0 $800.00" [ref=f1e277] [cursor=pointer]:
+          - generic [ref=f1e278]: 🛒 Groceries
+          - generic [ref=f1e279]: "0"
+          - generic [ref=f1e280]: $800.00
+        - button "🍔 Out to Eat 0 $200.00" [ref=f1e281] [cursor=pointer]:
+          - generic [ref=f1e282]: 🍔 Out to Eat
+          - generic [ref=f1e283]: "0"
+          - generic [ref=f1e284]: $200.00
+        - button "🎟 Entertainment 0 $100.00" [ref=f1e285] [cursor=pointer]:
+          - generic [ref=f1e286]: 🎟 Entertainment
+          - generic [ref=f1e287]: "0"
+          - generic [ref=f1e288]: $100.00
+        - button "🐾 Pets 0 $100.00" [ref=f1e289] [cursor=pointer]:
+          - generic [ref=f1e290]: 🐾 Pets
+          - generic [ref=f1e291]: "0"
+          - generic [ref=f1e292]: $100.00
+        - button "🧘 Stress Mgmt 0 $200.00" [ref=f1e293] [cursor=pointer]:
+          - generic [ref=f1e294]: 🧘 Stress Mgmt
+          - generic [ref=f1e295]: "0"
+          - generic [ref=f1e296]: $200.00
+        - button "💆 Personal Care 0 $20.00" [ref=f1e297] [cursor=pointer]:
+          - generic [ref=f1e298]: 💆 Personal Care
+          - generic [ref=f1e299]: "0"
+          - generic [ref=f1e300]: $20.00
+        - button "💊 Health Care 0 $80.00" [ref=f1e301] [cursor=pointer]:
+          - generic [ref=f1e302]: 💊 Health Care
+          - generic [ref=f1e303]: "0"
+          - generic [ref=f1e304]: $80.00
+        - button "📜 Life Ins 0 $50.00" [ref=f1e305] [cursor=pointer]:
+          - generic [ref=f1e306]: 📜 Life Ins
+          - generic [ref=f1e307]: "0"
+          - generic [ref=f1e308]: $50.00
+        - button "💼 LTD Bundle 0 $90.00" [ref=f1e309] [cursor=pointer]:
+          - generic [ref=f1e310]: 💼 LTD Bundle
+          - generic [ref=f1e311]: "0"
+          - generic [ref=f1e312]: $90.00
+        - button "✈ Conferences 0 $280.00" [ref=f1e313] [cursor=pointer]:
+          - generic [ref=f1e314]: ✈ Conferences
+          - generic [ref=f1e315]: "0"
+          - generic [ref=f1e316]: $280.00
+        - button "🎙 Info Sessions 0 $25.00" [ref=f1e317] [cursor=pointer]:
+          - generic [ref=f1e318]: 🎙 Info Sessions
+          - generic [ref=f1e319]: "0"
+          - generic [ref=f1e320]: $25.00
+        - button "👥 Team Meetings 0 $5.00" [ref=f1e321] [cursor=pointer]:
+          - generic [ref=f1e322]: 👥 Team Meetings
+          - generic [ref=f1e323]: "0"
+          - generic [ref=f1e324]: $5.00
+        - button "📖 Books/Materials 0 $5.00" [ref=f1e325] [cursor=pointer]:
+          - generic [ref=f1e326]: 📖 Books/Materials
+          - generic [ref=f1e327]: "0"
+          - generic [ref=f1e328]: $5.00
+        - button "💰 Personal Savings 0 $200.00" [ref=f1e329] [cursor=pointer]:
+          - generic [ref=f1e330]: 💰 Personal Savings
+          - generic [ref=f1e331]: "0"
+          - generic [ref=f1e332]: $200.00
+        - button "🌱 Seed Fund 0 $340.00" [ref=f1e333] [cursor=pointer]:
+          - generic [ref=f1e334]: 🌱 Seed Fund
+          - generic [ref=f1e335]: "0"
+          - generic [ref=f1e336]: $340.00
+        - button "🔧 Hardware & Tech 0 $250.00" [ref=f1e337] [cursor=pointer]:
+          - generic [ref=f1e338]: 🔧 Hardware & Tech
+          - generic [ref=f1e339]: "0"
+          - generic [ref=f1e340]: $250.00
+        - button "☁ Telecom & Cloud 0 $250.00" [ref=f1e341] [cursor=pointer]:
+          - generic [ref=f1e342]: ☁ Telecom & Cloud
+          - generic [ref=f1e343]: "0"
+          - generic [ref=f1e344]: $250.00
+        - button "📁 Other Miscellaneous 0 $100.00" [ref=f1e345] [cursor=pointer]:
+          - generic [ref=f1e346]: 📁 Other Miscellaneous
+          - generic [ref=f1e347]: "0"
+          - generic [ref=f1e348]: $100.00
+      - table "Purchase ledger" [ref=f1e350]:
+        - rowgroup [ref=f1e351]:
+          - row [ref=f1e352]:
+            - columnheader [ref=f1e353]:
+              - checkbox "Select All On Page" [ref=f1e354]
+            - columnheader "Date▼" [ref=f1e355] [cursor=pointer]:
+              - text: Date
+              - generic [ref=f1e356]: ▼
+            - columnheader "Designation" [ref=f1e357]
+            - columnheader "Vendor" [ref=f1e358]
+            - columnheader "Cat" [ref=f1e359]
+            - columnheader "Amount◆" [ref=f1e360] [cursor=pointer]:
+              - text: Amount
+              - generic [ref=f1e361]: ◆
+            - columnheader "Actions" [ref=f1e362]
+        - rowgroup [ref=f1e363]:
+          - row [ref=f1e364]:
+            - cell "— NO TRANSMISSIONS LOGGED —" [ref=f1e365]
+      - generic [ref=f1e366]:
+        - generic [ref=f1e367]:
+          - generic [ref=f1e368]: "Rows per page:"
+          - combobox [ref=f1e369] [cursor=pointer]:
+            - option "10"
+            - option "25" [selected]
+            - option "50"
+            - option "All"
+          - generic [ref=f1e370]: Showing 0-0 of 0
+        - generic [ref=f1e371]:
+          - button "« Prev" [disabled] [ref=f1e372]
+          - generic [ref=f1e373]: Page 1 of 1
+          - button "Next »" [disabled] [ref=f1e374]
+      - generic [ref=f1e375]: "Shortcuts: Ctrl+V Paste Receipt/Statement | Ctrl+K Search | Alt+N New Entry | Esc Close Modals / Reset"
+      - text: ⚙
