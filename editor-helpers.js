@@ -251,3 +251,135 @@ export function pickLocalSuggestion({ draft = '', fileName = 'untitled.html', la
   const match = bank.find(item => { try { return item.test(); } catch { return false; } });
   return match ? match.text : null;
 }
+
+// ---- ZIP export/import (STORE-only, no compression — keeps this dependency-free and
+// works in every browser without CompressionStream). Pure byte-math, no DOM/Blob here. ----
+
+const ZIP_LOCAL_HEADER_SIG = 0x04034b50;
+const ZIP_CENTRAL_HEADER_SIG = 0x02014b50;
+const ZIP_EOCD_SIG = 0x06054b50;
+
+export function crc32(bytes) {
+  let c = 0xffffffff;
+  for (let i = 0; i < bytes.length; i++) {
+    c ^= bytes[i];
+    for (let k = 0; k < 8; k++) c = (c >>> 1) ^ ((c & 1) ? 0xedb88320 : 0);
+  }
+  return (c ^ 0xffffffff) >>> 0;
+}
+
+/**
+ * Build an uncompressed (STORE method) .zip archive from a { name: text } map.
+ * Returns a plain Uint8Array (the caller wraps it in a Blob) so this stays testable
+ * without a browser. Mirrors the on-disk ZIP local/central-directory/EOCD structure.
+ */
+export function buildZipBytes(entries = {}) {
+  const enc = new TextEncoder();
+  const parts = [];
+  const centralParts = [];
+  let offset = 0;
+
+  for (const [name, value] of Object.entries(entries)) {
+    const nameBytes = enc.encode(name);
+    const data = enc.encode(String(value ?? ''));
+    const crc = crc32(data);
+
+    const local = new Uint8Array(30 + nameBytes.length);
+    const lv = new DataView(local.buffer);
+    lv.setUint32(0, ZIP_LOCAL_HEADER_SIG, true);
+    lv.setUint16(4, 20, true);        // version needed
+    lv.setUint16(6, 0x0800, true);    // flags: UTF-8 names
+    lv.setUint16(8, 0, true);         // method: STORE
+    lv.setUint16(10, 0, true);        // mod time
+    lv.setUint16(12, 0, true);        // mod date
+    lv.setUint32(14, crc, true);
+    lv.setUint32(18, data.length, true);
+    lv.setUint32(22, data.length, true);
+    lv.setUint16(26, nameBytes.length, true);
+    lv.setUint16(28, 0, true);        // extra length
+    local.set(nameBytes, 30);
+
+    const central = new Uint8Array(46 + nameBytes.length);
+    const cv = new DataView(central.buffer);
+    cv.setUint32(0, ZIP_CENTRAL_HEADER_SIG, true);
+    cv.setUint16(4, 20, true);
+    cv.setUint16(6, 20, true);
+    cv.setUint16(8, 0x0800, true);
+    cv.setUint16(10, 0, true);
+    cv.setUint16(12, 0, true);
+    cv.setUint16(14, 0, true);
+    cv.setUint32(16, crc, true);
+    cv.setUint32(20, data.length, true);
+    cv.setUint32(24, data.length, true);
+    cv.setUint16(28, nameBytes.length, true);
+    cv.setUint32(42, offset, true);
+    central.set(nameBytes, 46);
+
+    parts.push(local, data);
+    centralParts.push(central);
+    offset += local.length + data.length;
+  }
+
+  const centralSize = centralParts.reduce((n, x) => n + x.length, 0);
+  const end = new Uint8Array(22);
+  const ev = new DataView(end.buffer);
+  ev.setUint32(0, ZIP_EOCD_SIG, true);
+  ev.setUint16(8, centralParts.length, true);
+  ev.setUint16(10, centralParts.length, true);
+  ev.setUint32(12, centralSize, true);
+  ev.setUint32(16, offset, true);
+
+  const all = [...parts, ...centralParts, end];
+  const total = all.reduce((n, x) => n + x.length, 0);
+  const out = new Uint8Array(total);
+  let pos = 0;
+  for (const chunk of all) { out.set(chunk, pos); pos += chunk.length; }
+  return out;
+}
+
+/**
+ * Parse a STORE-method (uncompressed) .zip ArrayBuffer/Uint8Array into a { name: text } map.
+ * Deflate (method 8) entries are reported via `onDeflate` (name) so the caller can decide how
+ * to handle them (e.g. skip, or decompress with DecompressionStream where available) — kept
+ * out of this pure function so it stays testable without browser streaming APIs.
+ */
+export function parseZipBytes(buffer, onDeflate = () => {}) {
+  const bytes = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  let eocd = -1;
+  for (let i = bytes.length - 22; i >= Math.max(0, bytes.length - 65557); i--) {
+    if (view.getUint32(i, true) === ZIP_EOCD_SIG) { eocd = i; break; }
+  }
+  if (eocd < 0) throw new Error('Invalid ZIP: end-of-central-directory not found');
+
+  const count = view.getUint16(eocd + 10, true);
+  const centralOffset = view.getUint32(eocd + 16, true);
+  const dec = new TextDecoder();
+  const files = {};
+  let pos = centralOffset;
+
+  for (let i = 0; i < count; i++) {
+    if (view.getUint32(pos, true) !== ZIP_CENTRAL_HEADER_SIG) throw new Error('Invalid ZIP central directory entry');
+    const method = view.getUint16(pos + 10, true);
+    const compressedSize = view.getUint32(pos + 20, true);
+    const nameLen = view.getUint16(pos + 28, true);
+    const extraLen = view.getUint16(pos + 30, true);
+    const commentLen = view.getUint16(pos + 32, true);
+    const localOffset = view.getUint32(pos + 42, true);
+    const name = dec.decode(bytes.slice(pos + 46, pos + 46 + nameLen));
+
+    if (!name.endsWith('/')) {
+      const localNameLen = view.getUint16(localOffset + 26, true);
+      const localExtraLen = view.getUint16(localOffset + 28, true);
+      const dataStart = localOffset + 30 + localNameLen + localExtraLen;
+      const raw = bytes.slice(dataStart, dataStart + compressedSize);
+      if (method === 0) {
+        files[name] = dec.decode(raw);
+      } else {
+        onDeflate(name, raw);
+      }
+    }
+    pos += 46 + nameLen + extraLen + commentLen;
+  }
+  return files;
+}

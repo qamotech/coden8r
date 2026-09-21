@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { buildBreadcrumbTrail, formatStatusSummary, buildRecentDocuments, toggleBookmark, buildQuickOpenEntries, mutateDocumentList, createProjectNode, collectProjectTree, buildProjectTemplateEntries, buildRecentProjects, deleteProjectTreeNode, renameProjectTreeNode, moveProjectTreeNode, setProjectTreeNodeTag, setProjectTreeNodeNote, isLikelyTextFile, insertFileIntoProjectTree, pickLocalSuggestion } from '../editor-helpers.js';
+import { buildBreadcrumbTrail, formatStatusSummary, buildRecentDocuments, toggleBookmark, buildQuickOpenEntries, mutateDocumentList, createProjectNode, collectProjectTree, buildProjectTemplateEntries, buildRecentProjects, deleteProjectTreeNode, renameProjectTreeNode, moveProjectTreeNode, setProjectTreeNodeTag, setProjectTreeNodeNote, isLikelyTextFile, insertFileIntoProjectTree, pickLocalSuggestion, crc32, buildZipBytes, parseZipBytes } from '../editor-helpers.js';
 
 test('buildBreadcrumbTrail keeps workspace and file segments', () => {
   assert.deepEqual(buildBreadcrumbTrail('src/app/main.js'), ['Workspace', 'src', 'app', 'main.js']);
@@ -203,4 +203,53 @@ test('pickLocalSuggestion returns null when nothing in the bank matches', () => 
   const longNeutralDraft = 'Please write a complete deployment runbook covering every environment and rollback step.';
   const suggestion = pickLocalSuggestion({ draft: longNeutralDraft, fileName: 'ops.md', language: 'MARKDOWN' });
   assert.equal(suggestion, null);
+});
+
+test('crc32 matches a known reference value', () => {
+  // Standard reference: CRC32("123456789") === 0xCBF43926
+  const bytes = new TextEncoder().encode('123456789');
+  assert.equal(crc32(bytes), 0xcbf43926);
+});
+
+test('buildZipBytes/parseZipBytes round-trips a multi-file project', () => {
+  const files = { 'index.html': '<h1>Hi</h1>', 'src/app.js': 'console.log(1)', 'notes.md': '# Notes' };
+  const zipBytes = buildZipBytes(files);
+  assert.ok(zipBytes instanceof Uint8Array);
+  assert.ok(zipBytes.length > 0);
+  const parsed = parseZipBytes(zipBytes);
+  assert.deepEqual(parsed, files);
+});
+
+test('buildZipBytes produces a valid ZIP signature and EOCD record', () => {
+  const zipBytes = buildZipBytes({ 'a.txt': 'hi' });
+  const view = new DataView(zipBytes.buffer);
+  assert.equal(view.getUint32(0, true), 0x04034b50); // local file header signature
+  // EOCD signature must appear somewhere near the end
+  let found = false;
+  for (let i = zipBytes.length - 22; i >= 0; i--) {
+    if (view.getUint32(i, true) === 0x06054b50) { found = true; break; }
+  }
+  assert.ok(found, 'EOCD signature not found');
+});
+
+test('parseZipBytes reports deflate (method 8) entries via onDeflate instead of throwing', () => {
+  // Hand-crafted minimal ZIP with a "deflate" method flag (8) — content is irrelevant since
+  // this only tests that STORE-parsing correctly routes non-STORE entries to the callback.
+  const stored = buildZipBytes({ 'store.txt': 'plain' });
+  // Flip the method field (offset 8 in local header, offset 10 in central header) to 8 to simulate deflate.
+  const view = new DataView(stored.buffer);
+  view.setUint16(8, 8, true); // local header method
+  // Find central header (search for signature) and flip its method field too.
+  for (let i = 0; i < stored.length - 4; i++) {
+    if (view.getUint32(i, true) === 0x02014b50) { view.setUint16(i + 10, 8, true); break; }
+  }
+  const deflateNames = [];
+  const parsed = parseZipBytes(stored, (name) => deflateNames.push(name));
+  assert.deepEqual(parsed, {});
+  assert.deepEqual(deflateNames, ['store.txt']);
+});
+
+test('parseZipBytes throws a clear error for non-ZIP data', () => {
+  const garbage = new TextEncoder().encode('not a zip file at all');
+  assert.throws(() => parseZipBytes(garbage), /Invalid ZIP/);
 });

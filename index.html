@@ -341,6 +341,22 @@
     #console-output{margin:0;padding:10px;height:100%;overflow:auto;background:rgba(0,0,0,.25);font:11px/1.55 var(--mono);white-space:pre-wrap}
     .log-row{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.025);color:#bcd5df}
     .log-row.error{color:#ff91a5}.log-row.warn{color:var(--gold)}.log-row.info{color:var(--cyan)}
+    .terminal-search-row{display:flex;gap:6px;padding:8px 10px;border-bottom:1px solid var(--line)}
+    .terminal-search-row input{flex:1;min-height:32px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:rgba(0,0,0,.24);color:var(--text);font:11px var(--mono)}
+    #terminal-body{display:flex;flex-direction:column;min-height:0;height:100%}
+    .project-search-results{flex:0 0 auto;max-height:45%;overflow:auto;border-bottom:1px solid var(--line)}
+    .project-search-results:empty{display:none}
+    .search-empty{padding:10px;color:var(--muted);font:11px var(--mono)}
+    .search-file-group{border-bottom:1px solid rgba(255,255,255,.03)}
+    .search-file-heading{width:100%;text-align:left;padding:6px 10px;border:0;background:rgba(99,231,255,.06);color:var(--cyan);font:11px var(--mono);font-weight:700;cursor:pointer}
+    .search-file-heading:hover{background:rgba(99,231,255,.12)}
+    .search-hit{display:flex;gap:8px;padding:3px 10px 3px 18px;font:11px var(--mono);color:#bcd5df;cursor:pointer}
+    .search-hit:hover{background:rgba(255,255,255,.04)}
+    .search-hit-line{color:var(--muted);min-width:2.4em}
+    #terminal-lines{flex:1;margin:0;padding:10px;overflow:auto;background:rgba(0,0,0,.25);font:11px/1.55 var(--mono);white-space:pre-wrap}
+    .log-line{display:flex;gap:8px;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.025);color:#bcd5df}
+    .log-line .kind{color:var(--muted);min-width:1em}
+    .log-line.error{color:#ff91a5}.log-line.warn{color:var(--gold)}
 
     #dock{
       margin:0 8px;border-radius:12px;display:flex;align-items:center;justify-content:center;gap:7px;padding:7px 10px;z-index:80;overflow-x:auto
@@ -481,12 +497,22 @@
       <div class="api-cluster">
         <span id="connection-dot" class="connection-dot" title="Disconnected"></span>
         <div class="field-shell">
-          <input id="api-key" type="password" autocomplete="off" spellcheck="false" data-lpignore="true" placeholder="Gemini API / auth key" aria-label="Gemini API key">
+          <select id="provider-select" aria-label="AI provider">
+            <option value="gemini">Gemini</option>
+            <option value="anthropic">Anthropic</option>
+            <option value="openrouter">OpenRouter</option>
+            <option value="groq">Groq</option>
+            <option value="openai">OpenAI-compatible</option>
+            <option value="ollama">Ollama (local)</option>
+          </select>
+        </div>
+        <div class="field-shell">
+          <input id="api-key" type="password" autocomplete="off" spellcheck="false" data-lpignore="true" placeholder="Gemini API / auth key" aria-label="Provider API key">
           <button id="toggle-key" class="inline-icon" title="Show or hide key" aria-label="Show or hide API key">◉</button>
           <button id="clear-key" class="inline-icon" title="Forget key" aria-label="Forget API key">×</button>
         </div>
         <div class="field-shell">
-          <select id="model-select" aria-label="Gemini model" disabled>
+          <select id="model-select" aria-label="Model" disabled>
             <option value="">Connect to discover models</option>
           </select>
           <button id="custom-model" class="inline-icon" title="Enter a model ID" aria-label="Enter a custom model">✎</button>
@@ -519,6 +545,11 @@
               <button class="template-card" draggable="true" data-template="particles"><b>Particles</b><span>Pointer-reactive visual</span></button>
               <button class="template-card" draggable="true" data-template="component"><b>UI Components</b><span>Buttons, cards, forms</span></button>
             </div>
+          </div>
+          <div class="tool-section">
+            <div class="section-label"><span>Snippets</span><span>INSERT AT CURSOR</span></div>
+            <input id="snippet-search" class="palette-search" placeholder="Filter snippets…" autocomplete="off" style="margin-bottom:8px">
+            <div class="template-grid" id="snippet-grid"></div>
           </div>
           <div class="tool-section">
             <div class="section-label"><span>AI quick actions</span></div>
@@ -662,6 +693,8 @@
           <button class="glass-btn tiny" data-command="find">FIND</button>
           <button class="glass-btn tiny" data-command="open">IMPORT</button>
           <button class="glass-btn tiny" data-command="download">EXPORT</button>
+          <button class="glass-btn tiny" data-command="import-zip" title="Import a .zip of multiple files">ZIP IN</button>
+          <button class="glass-btn tiny" data-command="export-zip" title="Export all open text files as a .zip">ZIP OUT</button>
           <button class="glass-btn tiny" data-command="breadcrumb">PATH</button>
           <button class="glass-btn tiny" id="quick-open-trigger" type="button">OPEN</button>
           <span class="window-spacer"></span>
@@ -731,6 +764,32 @@
         </div>
         <div class="window-body"><pre id="console-output"></pre></div>
       </section>
+
+      <section class="app-window glass is-closed" id="win-terminal" data-window="terminal" aria-label="Terminal window">
+        <header class="window-titlebar">
+          <span class="window-icon">▤</span><span class="window-title">Terminal</span><span class="window-subtitle">build log · project search · code checks</span>
+          <span class="window-spacer"></span><span class="window-size"></span>
+          <div class="window-controls">
+            <button class="window-control minimize" title="Minimize" aria-label="Minimize Terminal">−</button>
+            <button class="window-control maximize" title="Maximize or restore" aria-label="Maximize Terminal">□</button>
+            <button class="window-control close" title="Close" aria-label="Close Terminal">×</button>
+          </div>
+        </header>
+        <div class="window-toolbar">
+          <button class="glass-btn tiny" data-command="run-checks">CHECK PROJECT</button>
+          <button class="glass-btn tiny" data-command="clear-terminal">CLEAR</button>
+          <span class="window-spacer"></span>
+          <span id="terminal-problem-count" class="viewport-readout">0 problems</span>
+        </div>
+        <div class="terminal-search-row">
+          <input id="project-search-input" type="search" placeholder="Search across every open file…" aria-label="Search across project files" autocomplete="off">
+          <button class="glass-btn tiny" id="project-search-btn">SEARCH</button>
+        </div>
+        <div class="window-body" id="terminal-body">
+          <div id="project-search-results" class="project-search-results"></div>
+          <pre id="terminal-lines"></pre>
+        </div>
+      </section>
     </section>
 
     <nav id="dock" class="glass" aria-label="Window dock">
@@ -739,6 +798,7 @@
       <button class="dock-item active" draggable="true" data-dock="editor" title="Source Core"><b>&lt;/&gt;</b><span>Editor</span></button>
       <button class="dock-item active" draggable="true" data-dock="preview" title="Live Output"><b>◫</b><span>Preview</span></button>
       <button class="dock-item" draggable="true" data-dock="console" title="Runtime Console"><b>&gt;_</b><span>Console</span></button>
+      <button class="dock-item" draggable="true" data-dock="terminal" title="Terminal"><b>▤</b><span>Terminal</span></button>
       <i class="dock-divider"></i>
       <button class="dock-item" data-command="restore-all" title="Restore all windows"><b>▦</b><span>Restore</span></button>
       <button class="dock-item" data-command="minimize-all" title="Minimize all windows"><b>―</b><span>Minimize</span></button>
@@ -785,6 +845,14 @@
         <div class="setting-card">
           <label for="max-tokens">Maximum output tokens</label>
           <input id="max-tokens" type="number" min="64" max="65536" value="8192">
+        </div>
+        <div class="setting-card">
+          <label for="ollama-host">Ollama server URL</label>
+          <input id="ollama-host" type="text" value="http://localhost:11434" spellcheck="false">
+        </div>
+        <div class="setting-card">
+          <label for="openai-endpoint">OpenAI-compatible endpoint</label>
+          <input id="openai-endpoint" type="text" value="https://api.openai.com/v1/chat/completions" spellcheck="false">
         </div>
         <div class="setting-card wide">
           <label for="system-prompt">System instruction</label>
@@ -862,13 +930,14 @@
   </dialog>
 
   <input id="file-input" type="file" multiple hidden>
+  <input id="zip-input" type="file" accept=".zip,application/zip" hidden>
   <div id="toast-stack" aria-live="polite"></div>
 
   <script type="module">
     import { buildGatewayHeaders, getGatewayAuthStrategies, resolveGatewayBaseUrl } from './gateway-helpers.js';
-    import { buildBreadcrumbTrail, formatStatusSummary, buildRecentDocuments, toggleBookmark, buildQuickOpenEntries, mutateDocumentList, buildProjectTemplateEntries, buildRecentProjects, deleteProjectTreeNode, renameProjectTreeNode, moveProjectTreeNode, setProjectTreeNodeTag, setProjectTreeNodeNote, isLikelyTextFile, insertFileIntoProjectTree, pickLocalSuggestion } from './editor-helpers.js';
+    import { buildBreadcrumbTrail, formatStatusSummary, buildRecentDocuments, toggleBookmark, buildQuickOpenEntries, mutateDocumentList, buildProjectTemplateEntries, buildRecentProjects, deleteProjectTreeNode, renameProjectTreeNode, moveProjectTreeNode, setProjectTreeNodeTag, setProjectTreeNodeNote, isLikelyTextFile, insertFileIntoProjectTree, pickLocalSuggestion, crc32, buildZipBytes, parseZipBytes } from './editor-helpers.js';
     window.GatewayHelpers = { buildGatewayHeaders, getGatewayAuthStrategies, resolveGatewayBaseUrl };
-    window.EditorHelpers = { buildBreadcrumbTrail, formatStatusSummary, buildRecentDocuments, toggleBookmark, buildQuickOpenEntries, mutateDocumentList, buildProjectTemplateEntries, buildRecentProjects, deleteProjectTreeNode, renameProjectTreeNode, moveProjectTreeNode, setProjectTreeNodeTag, setProjectTreeNodeNote, isLikelyTextFile, insertFileIntoProjectTree, pickLocalSuggestion };
+    window.EditorHelpers = { buildBreadcrumbTrail, formatStatusSummary, buildRecentDocuments, toggleBookmark, buildQuickOpenEntries, mutateDocumentList, buildProjectTemplateEntries, buildRecentProjects, deleteProjectTreeNode, renameProjectTreeNode, moveProjectTreeNode, setProjectTreeNodeTag, setProjectTreeNodeNote, isLikelyTextFile, insertFileIntoProjectTree, pickLocalSuggestion, crc32, buildZipBytes, parseZipBytes };
   </script>
   <script>
   (() => {
@@ -907,6 +976,7 @@
       viewport: { mode: "fluid", width: 0, height: 0 },
       strictSandbox: true,
       consoleEvents: 0,
+      terminalProblems: 0,
       autoRunTimer: null,
       autosaveTimer: null,
       navigatorTimer: null,
@@ -940,8 +1010,23 @@
         includeSource: true,
         wrapCode: false,
         suggestions: true,
+        provider: "gemini",
+        ollamaHost: "http://localhost:11434",
+        openaiEndpoint: "https://api.openai.com/v1/chat/completions",
         systemPrompt: "You are an expert senior software engineer inside CodeN8R. Return exact, runnable, self-contained HTML/CSS/JavaScript when coding is requested. Use fenced code blocks. Preserve the user's intent, explain decisions concisely, and prioritize accessibility, security, performance, responsive design, and robust error handling."
       }
+    };
+
+    // Non-Gemini providers this session has connected keys for, kept only in memory
+    // (never persisted — matches the existing Gemini key's "memory only" security note).
+    const providerKeys = { anthropic: "", openrouter: "", groq: "", openai: "", ollama: "" };
+    const PROVIDER_LABELS = { gemini: "Gemini", anthropic: "Anthropic", openrouter: "OpenRouter", groq: "Groq", openai: "OpenAI-compatible", ollama: "Ollama (local)" };
+    const PROVIDER_DEFAULT_MODELS = {
+      anthropic: ["claude-opus-5", "claude-sonnet-5", "claude-haiku-4-5-20251001"],
+      openrouter: ["anthropic/claude-sonnet-5", "openai/gpt-4o", "meta-llama/llama-3.3-70b-instruct"],
+      groq: ["llama-3.3-70b-versatile", "llama-3.1-8b-instant", "mixtral-8x7b-32768"],
+      openai: ["gpt-4o", "gpt-4o-mini"],
+      ollama: [] // discovered live from the local server
     };
 
     const templates = {
@@ -1049,6 +1134,21 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
 </style></head><body><main class="shell"><h1>Component Lab</h1><div class="grid"><section class="card"><h2>Buttons</h2><div class="stack"><button class="primary">Primary</button><button>Secondary</button><button class="danger">Delete</button></div></section><section class="card"><h2>Inputs</h2><div class="stack"><input placeholder="Email address"><select><option>Starter</option><option>Pro</option></select></div></section><section class="card"><h2>Badges</h2><div class="stack"><span class="badge">Active</span><span class="badge">New</span></div></section><section class="card"><h2>Progress</h2><progress value="72" max="100" style="width:100%;accent-color:#63e7ff"></progress></section></div></main></body></html>`
     };
 
+    const BUILTIN_SNIPPETS = [
+      { name: "Glass panel", lang: "css", code: `.glass-panel{background:rgba(10,20,28,.72);border:1px solid rgba(79,255,225,.2);border-radius:16px;backdrop-filter:blur(18px);box-shadow:0 24px 70px rgba(0,0,0,.45)}` },
+      { name: "Responsive grid", lang: "css", code: `.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}` },
+      { name: "Reduced motion", lang: "css", code: `@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}` },
+      { name: "Cyber scan animation", lang: "css", code: `@keyframes cyberScan{from{transform:translateX(-100%)}to{transform:translateX(100%)}}.scanline{animation:cyberScan 5s linear infinite}` },
+      { name: "Neon button", lang: "html", code: `<button class="neon-button">Initialize</button>` },
+      { name: "Accessible modal", lang: "html", code: `<dialog id="appDialog" aria-labelledby="dialogTitle"><h2 id="dialogTitle">System dialog</h2><button onclick="appDialog.close()">Close</button></dialog>` },
+      { name: "Fetch JSON", lang: "js", code: `async function getJSON(url){const response=await fetch(url);if(!response.ok)throw new Error(\`HTTP \${response.status}\`);return response.json()}` },
+      { name: "Local storage state", lang: "js", code: `const loadState=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}};const saveState=(key,value)=>localStorage.setItem(key,JSON.stringify(value));` },
+      { name: "Debounce", lang: "js", code: `const debounce=(fn,delay=300)=>{let timer;return(...args)=>{clearTimeout(timer);timer=setTimeout(()=>fn(...args),delay)}};` },
+      { name: "Toast notification", lang: "js", code: `function toast(message){const el=document.createElement('div');el.className='toast';el.textContent=message;document.body.append(el);setTimeout(()=>el.remove(),2400)}` },
+      { name: "Canvas resize", lang: "js", code: `function fitCanvas(canvas){const ratio=devicePixelRatio||1;const rect=canvas.getBoundingClientRect();canvas.width=rect.width*ratio;canvas.height=rect.height*ratio;canvas.getContext('2d').scale(ratio,ratio)}` },
+      { name: "Form handler", lang: "js", code: `document.querySelector('form').addEventListener('submit',event=>{event.preventDefault();const data=Object.fromEntries(new FormData(event.currentTarget));console.log(data)});` }
+    ];
+
     const featureNames = [
       "Live Gemini key verification","Dynamic model discovery","Current-model auto selection","Authorization-key header support",
       "Streaming AI responses","Detailed API error recovery","Abort active generation","Retry last prompt","Temperature control",
@@ -1084,6 +1184,8 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
     const commands = [
       ["new","New document","Ctrl+N"],["open","Open file","Ctrl+O"],["save","Save to this device","Ctrl+S"],
       ["download","Download HTML","Ctrl+Shift+S"],["run","Compile and run preview","Ctrl+R"],["format","Tidy HTML source",""],
+      ["export-zip","Export all files as .zip",""],["import-zip","Import files from .zip",""],
+      ["terminal","Toggle terminal window","Alt+6"],["run-checks","Check project for problems",""],["clear-terminal","Clear terminal",""],
       ["find","Find and replace","Ctrl+F"],["go-to-line","Go to line","Ctrl+G"],["duplicate-line","Duplicate line / selection","Ctrl+D"],
       ["copy-code","Copy all source",""],["snapshot","Create version snapshot",""],
       ["versions","Open version history",""],["layout","Cycle desktop layout",""],["restore-all","Restore all windows",""],
@@ -1155,6 +1257,11 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       $("#temperature").value = s.temperature;
       $("#temperature-label").textContent = Number(s.temperature).toFixed(1);
       $("#max-tokens").value = s.maxTokens;
+      $("#ollama-host").value = s.ollamaHost;
+      $("#openai-endpoint").value = s.openaiEndpoint;
+      $("#provider-select").value = s.provider || "gemini";
+      $("#api-key").disabled = s.provider === "ollama";
+      $("#api-key").placeholder = s.provider === "ollama" ? "No key needed for local Ollama" : `${PROVIDER_LABELS[s.provider] || "Gemini"} API key`;
       $("#system-prompt").value = s.systemPrompt;
       $("#autosave-toggle").checked = s.autosave;
       $("#motion-toggle").checked = s.reducedMotion;
@@ -1175,6 +1282,8 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         intensity: Number($("#effect-range").value),
         temperature: Number($("#temperature").value),
         maxTokens: Math.max(64, Math.min(65536, Number($("#max-tokens").value) || 8192)),
+        ollamaHost: $("#ollama-host").value.trim() || "http://localhost:11434",
+        openaiEndpoint: $("#openai-endpoint").value.trim() || "https://api.openai.com/v1/chat/completions",
         systemPrompt: $("#system-prompt").value.trim(),
         autosave: $("#autosave-toggle").checked,
         reducedMotion: $("#motion-toggle").checked,
@@ -1240,6 +1349,77 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       const name = state.fileName.toLowerCase().endsWith(".html") ? state.fileName : `${state.fileName}.html`;
       downloadBlob($("#code-editor").value, name, "text/html;charset=utf-8");
       toast(`Downloaded ${name}.`, "good");
+    }
+
+    function exportProjectZip() {
+      const helpers = window.EditorHelpers || {};
+      if (!helpers.buildZipBytes) { toast("ZIP export is unavailable right now.", "error"); return; }
+      syncActiveDocumentCode(); // make sure the buffer currently on screen is included
+      const textDocs = state.documents.filter(doc => !doc.binary);
+      if (!textDocs.length) { toast("Nothing to export.", "warn"); return; }
+      const entries = {};
+      textDocs.forEach(doc => { entries[doc.fileName] = doc.code || ""; });
+      const zipBytes = helpers.buildZipBytes(entries);
+      const zipName = `coden8r-project-${new Date().toISOString().slice(0,10)}.zip`;
+      downloadBlob(zipBytes, zipName, "application/zip");
+      toast(`Exported ${textDocs.length} file${textDocs.length === 1 ? "" : "s"} to ${zipName}.`, "good");
+    }
+
+    async function importProjectZip(file) {
+      const helpers = window.EditorHelpers || {};
+      if (!file) return;
+      if (!helpers.parseZipBytes) { toast("ZIP import is unavailable right now.", "error"); return; }
+      try {
+        const buffer = await file.arrayBuffer();
+        const deflateSkipped = [];
+        const files = helpers.parseZipBytes(buffer, (name) => deflateSkipped.push(name));
+        const names = Object.keys(files);
+        if (!names.length && !deflateSkipped.length) { toast("That ZIP has no readable files.", "warn"); return; }
+
+        // Compressed (deflate) entries need DecompressionStream to read — attempt it here so
+        // ordinary zip tools (which default to deflate) still work, not just our own STORE export.
+        if (deflateSkipped.length && typeof DecompressionStream !== "undefined") {
+          const raw = new Uint8Array(buffer);
+          const view = new DataView(raw.buffer);
+          let pos = 0;
+          // Re-walk local headers to grab each deflate entry's compressed bytes by name.
+          const localByName = {};
+          while (pos < raw.length - 4 && view.getUint32(pos, true) === 0x04034b50) {
+            const method = view.getUint16(pos + 8, true);
+            const compSize = view.getUint32(pos + 18, true);
+            const nameLen = view.getUint16(pos + 26, true);
+            const extraLen = view.getUint16(pos + 28, true);
+            const name = new TextDecoder().decode(raw.slice(pos + 30, pos + 30 + nameLen));
+            const dataStart = pos + 30 + nameLen + extraLen;
+            if (method === 8) localByName[name] = raw.slice(dataStart, dataStart + compSize);
+            pos = dataStart + compSize;
+          }
+          for (const name of deflateSkipped) {
+            const compressed = localByName[name];
+            if (!compressed) continue;
+            try {
+              const stream = new Blob([compressed]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+              const inflated = await new Response(stream).arrayBuffer();
+              files[name] = new TextDecoder().decode(inflated);
+            } catch { /* leave unreadable entries out rather than fail the whole import */ }
+          }
+        }
+
+        const imported = Object.keys(files);
+        if (!imported.length) { toast("Could not read any files from that ZIP (unsupported compression).", "error"); return; }
+
+        let lastName = null;
+        imported.forEach(name => {
+          upsertDocument(name, files[name], { binary: false });
+          addFileToProjectTree(name);
+          lastName = name;
+        });
+        if (lastName) switchToDocument(lastName);
+        renderProjectTree(); renderWorkspaceNavigator();
+        toast(`Imported ${imported.length} file${imported.length === 1 ? "" : "s"} from ZIP.`, "good");
+      } catch (error) {
+        toast(`Could not read ZIP: ${error.message}`, "error");
+      }
     }
 
     function undoEdit() {
@@ -1435,6 +1615,142 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       if (showToast) toast("Runtime console cleared.");
     }
 
+    function logTerminal(message, level = "log") {
+      const line = document.createElement("div");
+      line.className = `log-line ${level}`;
+      const kind = document.createElement("span");
+      kind.className = "kind";
+      kind.textContent = level === "error" ? "✕" : level === "warn" ? "!" : "›";
+      const text = document.createElement("span");
+      text.textContent = String(message);
+      line.append(kind, text);
+      $("#terminal-lines").append(line);
+      $("#terminal-lines").scrollTop = $("#terminal-lines").scrollHeight;
+      if (level === "error") {
+        state.terminalProblems = (state.terminalProblems || 0) + 1;
+        $("#terminal-problem-count").textContent = `${state.terminalProblems} problem${state.terminalProblems === 1 ? "" : "s"}`;
+      }
+    }
+
+    function clearTerminal(showToast = true) {
+      $("#terminal-lines").replaceChildren();
+      $("#project-search-results").replaceChildren();
+      state.terminalProblems = 0;
+      $("#terminal-problem-count").textContent = "0 problems";
+      if (showToast) toast("Terminal cleared.");
+    }
+
+    /**
+     * Static-analysis pass over the current project's text documents: catches issues the
+     * live preview's console won't (missing HTML entry, duplicate IDs, unbalanced CSS braces,
+     * a JS syntax error, unresolved local file references, missing image alt text). Adapted
+     * from codedojo's runChecks — operates across every open document, not just the active one.
+     */
+    function runChecks() {
+      syncActiveDocumentCode();
+      $("#win-terminal").classList.remove("is-closed"); $("#win-terminal").classList.add("is-open"); syncDock();
+      logTerminal("Running project checks…");
+      const textDocs = state.documents.filter(doc => !doc.binary);
+      const byName = {}; textDocs.forEach(doc => { byName[doc.fileName] = doc.code || ""; });
+      const htmlDoc = textDocs.find(doc => /\.html?$/i.test(doc.fileName));
+      const cssText = textDocs.filter(doc => /\.css$/i.test(doc.fileName)).map(doc => doc.code).join("\n");
+      const jsText = textDocs.filter(doc => /\.m?js$/i.test(doc.fileName)).map(doc => doc.code).join("\n");
+      const html = htmlDoc?.code || "";
+
+      let problems = 0;
+      const report = (level, title, detail) => {
+        logTerminal(`${title}${detail ? " — " + detail : ""}`, level === "pass" ? "log" : level);
+        if (level === "error") problems++;
+      };
+
+      if (htmlDoc) report("pass", "HTML entry found", htmlDoc.fileName);
+      else report("error", "No HTML entry", "Add an .html file to run a preview.");
+
+      if (/<meta[^>]+name=["']viewport/i.test(html)) report("pass", "Responsive viewport", "Viewport metadata is present.");
+      else if (htmlDoc) report("warn", "Missing viewport meta", "Mobile rendering may be incorrect.");
+
+      if (htmlDoc) {
+        const ids = [...html.matchAll(/\bid=["']([^"']+)/gi)].map(m => m[1]);
+        const duplicates = [...new Set(ids.filter((x,i) => ids.indexOf(x) !== i))];
+        if (duplicates.length) report("error", "Duplicate IDs", duplicates.join(", "));
+        else report("pass", "Unique IDs", `${ids.length} IDs inspected.`);
+
+        const missingAlt = [...html.matchAll(/<img\b(?![^>]*\balt=)[^>]*>/gi)];
+        if (missingAlt.length) report("warn", "Images missing alt text", `${missingAlt.length} image(s)`);
+        else report("pass", "Image alternatives", "No missing alt attributes detected.");
+      }
+
+      if (cssText.trim()) {
+        const open = (cssText.match(/\{/g) || []).length, close = (cssText.match(/\}/g) || []).length;
+        if (open === close) report("pass", "CSS brace balance", "Stylesheet blocks are balanced.");
+        else report("error", "CSS brace mismatch", `${open} '{' vs ${close} '}'.`);
+      }
+
+      if (jsText.trim()) {
+        try { new Function(jsText); report("pass", "JavaScript syntax", "JavaScript compiled successfully."); }
+        catch (error) { report("error", "JavaScript syntax", error.message); }
+      }
+
+      if (htmlDoc) {
+        const refs = [...html.matchAll(/(?:src|href)=["']([^"']+)["']/gi)].map(m => m[1])
+          .filter(ref => !/^https?:|^data:|^#|^mailto:|^tel:|^blob:/i.test(ref));
+        const missing = refs.filter(ref => !(ref.replace(/^\.\//,"") in byName));
+        if (missing.length) report("warn", "Unresolved local references", [...new Set(missing)].join(", "));
+        else if (refs.length) report("pass", "Local references", "All local file references resolve.");
+      }
+
+      logTerminal(problems ? `Checks complete — ${problems} problem${problems === 1 ? "" : "s"} found.` : "Checks complete — no blocking problems found.", problems ? "warn" : "log");
+      setSystemStatus(problems ? `${problems} project problem${problems === 1 ? "" : "s"}` : "Project checks passed");
+    }
+
+    /** Cross-file text search across every open document (not just the active editor buffer). */
+    function searchProject(query) {
+      const results = $("#project-search-results");
+      results.replaceChildren();
+      const term = String(query || "").trim();
+      if (!term) { results.innerHTML = '<div class="search-empty">Type a term and press Search.</div>'; return; }
+      syncActiveDocumentCode();
+      let matchCount = 0, fileCount = 0;
+      state.documents.filter(doc => !doc.binary).forEach(doc => {
+        const lines = (doc.code || "").split("\n");
+        const hits = [];
+        lines.forEach((line, i) => {
+          if (line.toLowerCase().includes(term.toLowerCase())) hits.push({ line: i + 1, text: line.trim().slice(0, 160) });
+        });
+        if (!hits.length) return;
+        fileCount++; matchCount += hits.length;
+        const group = document.createElement("div");
+        group.className = "search-file-group";
+        const heading = document.createElement("button");
+        heading.type = "button";
+        heading.className = "search-file-heading";
+        heading.textContent = `${doc.fileName} (${hits.length})`;
+        heading.addEventListener("click", () => switchToDocument(doc.fileName));
+        group.append(heading);
+        hits.slice(0, 40).forEach(hit => {
+          const row = document.createElement("div");
+          row.className = "search-hit";
+          const lineNum = document.createElement("span");
+          lineNum.className = "search-hit-line";
+          lineNum.textContent = `${hit.line}:`;
+          const text = document.createElement("span");
+          text.textContent = hit.text;
+          row.append(lineNum, text);
+          row.addEventListener("click", () => {
+            switchToDocument(doc.fileName);
+            const editor = $("#code-editor");
+            const targetLine = editor.value.split("\n").slice(0, hit.line - 1).join("\n").length + (hit.line > 1 ? 1 : 0);
+            editor.focus(); editor.setSelectionRange(targetLine, targetLine + hit.text.length);
+            updateCursor();
+          });
+          group.append(row);
+        });
+        results.append(group);
+      });
+      if (!fileCount) { results.innerHTML = `<div class="search-empty">No matches for "${term.replace(/</g,"&lt;")}".</div>`; return; }
+      logTerminal(`Project search "${term}" — ${matchCount} match${matchCount === 1 ? "" : "es"} in ${fileCount} file${fileCount === 1 ? "" : "s"}.`);
+    }
+
     function loadTemplate(name) {
       if (!templates[name]) return;
       if ($("#code-editor").value.trim() && state.dirty && !confirm("Replace the current source with this template?")) return;
@@ -1447,6 +1763,41 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       executeCode();
       focusWindow($("#win-editor"));
       toast(`${name} template loaded.`, "good");
+    }
+
+    function renderSnippets(filter = "") {
+      const grid = $("#snippet-grid");
+      if (!grid) return;
+      grid.replaceChildren();
+      const term = filter.trim().toLowerCase();
+      const matches = BUILTIN_SNIPPETS.filter(s => !term || s.name.toLowerCase().includes(term) || s.lang.toLowerCase().includes(term) || s.code.toLowerCase().includes(term));
+      if (!matches.length) {
+        const empty = document.createElement("p"); empty.style.cssText = "color:var(--muted);font-size:11px;padding:6px 2px"; empty.textContent = "No snippets match.";
+        grid.append(empty); return;
+      }
+      matches.forEach(snippet => {
+        const card = document.createElement("button");
+        card.type = "button"; card.className = "template-card"; card.draggable = true;
+        card.innerHTML = `<b>${snippet.name}</b><span>${snippet.lang.toUpperCase()}</span>`;
+        card.addEventListener("click", () => insertSnippet(snippet));
+        card.addEventListener("dragstart", event => { event.dataTransfer.setData("text/plain", snippet.code); event.dataTransfer.effectAllowed = "copy"; });
+        grid.append(card);
+      });
+    }
+
+    function insertSnippet(snippet) {
+      const editor = $("#code-editor");
+      const start = editor.selectionStart ?? editor.value.length;
+      const end = editor.selectionEnd ?? editor.value.length;
+      const before = editor.value.slice(0, start);
+      const after = editor.value.slice(end);
+      const needsLeadingNewline = before && !before.endsWith("\n");
+      const insertion = (needsLeadingNewline ? "\n" : "") + snippet.code;
+      editor.value = before + insertion + after;
+      const caret = before.length + insertion.length;
+      editor.focus(); editor.setSelectionRange(caret, caret);
+      onEditorInput(); executeCode();
+      toast(`Inserted "${snippet.name}" snippet.`, "good");
     }
 
     function openFilePicker() { $("#file-input").click(); }
@@ -2150,7 +2501,69 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       appendMessage("SYSTEM","Gemini is ready for a real connection. Paste an API or authorization key, select CONNECT, and CodeN8R will discover the models currently available to that key. Keys remain in memory only.","assistant");
     }
 
-    function getKey() { return $("#api-key").value.trim(); }
+    function currentProvider() { return $("#provider-select")?.value || "gemini"; }
+    function isGeminiProvider() { return currentProvider() === "gemini"; }
+    function getKey() {
+      const provider = currentProvider();
+      if (provider === "gemini") return $("#api-key").value.trim();
+      return ($("#api-key").value.trim()) || providerKeys[provider] || "";
+    }
+
+    /**
+     * Unified request/response adapter for every non-Gemini provider, mirroring the shape
+     * codeforge used (one function, branch on provider). Gemini keeps its own dedicated
+     * streaming path in sendToGemini() since it already works well and supports SSE.
+     */
+    async function callOtherProvider(provider, model, system, userText) {
+      if (provider === "ollama") {
+        const host = (state.settings.ollamaHost || "http://localhost:11434").replace(/\/$/, "");
+        const res = await fetch(`${host}/api/generate`, {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ model, system, prompt: userText, stream: false })
+        });
+        if (!res.ok) throw new Error(`Ollama status ${res.status}. Is 'ollama serve' running?`);
+        return (await res.json()).response || "";
+      }
+      if (provider === "groq") {
+        const key = getKey(); if (!key) throw new Error("Groq API key missing.");
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ model, max_tokens: state.settings.maxTokens, messages: [{ role: "system", content: system }, { role: "user", content: userText }] })
+        });
+        if (!res.ok) throw new Error(`Groq status ${res.status}: ${(await res.text()).slice(0,300)}`);
+        return (await res.json()).choices?.[0]?.message?.content || "";
+      }
+      if (provider === "openrouter") {
+        const key = getKey(); if (!key) throw new Error("OpenRouter API key missing.");
+        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ model, max_tokens: state.settings.maxTokens, messages: [{ role: "system", content: system }, { role: "user", content: userText }] })
+        });
+        if (!res.ok) throw new Error(`OpenRouter status ${res.status}: ${(await res.text()).slice(0,300)}`);
+        return (await res.json()).choices?.[0]?.message?.content || "";
+      }
+      if (provider === "anthropic") {
+        const key = getKey(); if (!key) throw new Error("Anthropic API key missing.");
+        const res = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "anthropic-dangerous-direct-browser-access": "true", "Content-Type": "application/json" },
+          body: JSON.stringify({ model, max_tokens: state.settings.maxTokens, system, messages: [{ role: "user", content: userText }] })
+        });
+        if (!res.ok) { const body = await res.json().catch(() => ({})); throw new Error(`Anthropic error (${res.status}): ${body.error?.message || res.statusText}`); }
+        return (await res.json()).content?.[0]?.text || "";
+      }
+      if (provider === "openai") {
+        const key = getKey(); if (!key) throw new Error("OpenAI-compatible API key missing.");
+        const endpoint = state.settings.openaiEndpoint || "https://api.openai.com/v1/chat/completions";
+        const res = await fetch(endpoint, {
+          method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+          body: JSON.stringify({ model, max_tokens: state.settings.maxTokens, messages: [{ role: "system", content: system }, { role: "user", content: userText }] })
+        });
+        if (!res.ok) throw new Error(`OpenAI-compatible endpoint status ${res.status}: ${(await res.text()).slice(0,300)}`);
+        return (await res.json()).choices?.[0]?.message?.content || "";
+      }
+      throw new Error(`Unknown provider: ${provider}`);
+    }
     async function parseApiError(response) {
       let data = null; let raw = "";
       try { data = await response.json(); } catch { try { raw = await response.text(); } catch {} }
@@ -2182,6 +2595,10 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
     }
 
     async function validateKey() {
+      return isGeminiProvider() ? validateGeminiKey() : validateOtherProviderKey();
+    }
+
+    async function validateGeminiKey() {
       const key = getKey();
       if (!key) { toast("Paste a Gemini API or authorization key first.","warn"); $("#api-key").focus(); return false; }
       if (state.busy) return false;
@@ -2210,6 +2627,49 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         setConnection("error","Connection failed");
         appendMessage("CONNECTION ERROR",error.message,"error");
         toast("Gemini connection failed. Details are in the AI window.","error");
+        return false;
+      } finally {
+        state.busy = false; $("#connect-btn").disabled = false; $("#connect-btn").textContent = state.connected ? "RECONNECT" : "CONNECT";
+      }
+    }
+
+    async function validateOtherProviderKey() {
+      const provider = currentProvider();
+      const label = PROVIDER_LABELS[provider] || provider;
+      if (provider !== "ollama") {
+        const key = $("#api-key").value.trim();
+        if (!key) { toast(`Paste a ${label} API key first.`,"warn"); $("#api-key").focus(); return false; }
+        providerKeys[provider] = key; // memory-only, mirrors the Gemini key's security note
+      }
+      if (state.busy) return false;
+      state.busy = true; setConnection("busy",`Checking ${label}`); $("#connect-btn").disabled = true; $("#connect-btn").textContent = "CHECKING…";
+      try {
+        let models = PROVIDER_DEFAULT_MODELS[provider] || [];
+        if (provider === "ollama") {
+          const host = (state.settings.ollamaHost || "http://localhost:11434").replace(/\/$/, "");
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 5500);
+          const res = await fetch(`${host}/api/tags`, { signal: controller.signal });
+          clearTimeout(timer);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          models = (data.models || []).map(m => m.name).filter(Boolean);
+          if (!models.length) throw new Error("Ollama is running but reports no installed models. Try: ollama pull llama3.2");
+        }
+        state.models = models.map(id => ({ id, name: id, description: "" }));
+        state.connected = true;
+        populateModels(state.models);
+        $("#chat-model-label").textContent = `${label} · ${$("#model-select").value}`;
+        setConnection("online",`Connected · ${label}`);
+        setSystemStatus(`${label} connected`);
+        toast(`Connected to ${label}.`,"good");
+        return true;
+      } catch (error) {
+        state.connected = false; state.models = []; resetModelSelect();
+        setConnection("error","Connection failed");
+        const hint = provider === "ollama" ? " Is 'ollama serve' running, and does it allow this origin?" : "";
+        appendMessage("CONNECTION ERROR", `${label}: ${error.message}${hint}`, "error");
+        toast(`${label} connection failed. Details are in the AI window.`,"error");
         return false;
       } finally {
         state.busy = false; $("#connect-btn").disabled = false; $("#connect-btn").textContent = state.connected ? "RECONNECT" : "CONNECT";
@@ -2265,6 +2725,52 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
     }
 
     async function sendToGemini(forcedPrompt = "") {
+      return isGeminiProvider() ? sendGeminiMessage(forcedPrompt) : sendOtherProviderMessage(forcedPrompt);
+    }
+
+    async function sendOtherProviderMessage(forcedPrompt = "") {
+      if (state.busy) return;
+      const provider = currentProvider();
+      const label = PROVIDER_LABELS[provider] || provider;
+      const input = $("#chat-input");
+      const prompt = (forcedPrompt || input.value).trim();
+      if (!prompt) return;
+      if (provider !== "ollama" && !getKey()) { toast(`Connect a ${label} key before transmitting.`,"warn"); $("#api-key").focus(); return; }
+      if (!state.connected && !(await validateKey())) return;
+      const model = $("#model-select").value;
+      if (!model) { toast(`Select a ${label} model.`,"warn"); return; }
+
+      state.lastPrompt = prompt; input.value = ""; updatePromptTokens();
+      appendMessage("OPERATOR",prompt,"user");
+      state.messages.push({role:"user",text:prompt});
+      const pending = appendMessage(model,"","assistant",{streaming:true});
+      state.busy = true; $("#send-btn").disabled = true; setConnection("busy",`${label} is generating`);
+      setSystemStatus(`${label} generating`);
+
+      let userText = prompt;
+      if (state.settings.includeSource && $("#code-editor").value.trim()) {
+        const source = $("#code-editor").value;
+        const clipped = source.length > 50000 ? `${source.slice(0,50000)}\n\n[Source truncated at 50,000 characters]` : source;
+        userText += `\n\nCurrent editor source (${state.fileName}):\n\`\`\`html\n${clipped}\n\`\`\``;
+      }
+
+      try {
+        const finalText = await callOtherProvider(provider, model, state.settings.systemPrompt, userText);
+        if (!finalText.trim()) throw new Error(`${label} returned no text.`);
+        pending.update(finalText,false);
+        state.messages.push({role:"model",text:finalText});
+        setSystemStatus(`${label} response complete`);
+      } catch (error) {
+        pending.update(error.message,false); pending.node.classList.add("error");
+        toast(`${label} request failed. See the AI window for details.`,"error");
+        setSystemStatus(`${label} request failed`);
+      } finally {
+        state.busy = false; $("#send-btn").disabled = false;
+        setConnection(state.connected ? "online" : "",`${label} connection ready`);
+      }
+    }
+
+    async function sendGeminiMessage(forcedPrompt = "") {
       if (state.busy) return;
       const input = $("#chat-input");
       const prompt = (forcedPrompt || input.value).trim();
@@ -2488,24 +2994,24 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
     }
     function closeWindow(win) {
       win.classList.add("is-closed"); win.classList.remove("is-minimized","is-maximized");
-      if (win.id === "win-console") win.classList.remove("is-open");
+      if (win.id === "win-console" || win.id === "win-terminal") win.classList.remove("is-open");
       syncDock(); saveLayout();
     }
     function restoreWindow(name) {
       const win = windowByName(name); if (!win) return;
-      if (name === "console") win.classList.add("is-open");
+      if (name === "console" || name === "terminal") win.classList.add("is-open");
       win.classList.remove("is-closed","is-minimized"); focusWindow(win); syncDock(); saveLayout();
     }
     function toggleDockWindow(name) {
       const win = windowByName(name); if (!win) return;
-      if (win.classList.contains("is-closed") || win.classList.contains("is-minimized") || (name === "console" && !win.classList.contains("is-open"))) restoreWindow(name);
+      if (win.classList.contains("is-closed") || win.classList.contains("is-minimized") || ((name === "console" || name === "terminal") && !win.classList.contains("is-open"))) restoreWindow(name);
       else if (win.classList.contains("is-focused")) minimizeWindow(win);
       else focusWindow(win);
     }
     function syncDock() {
       $$("[data-dock]").forEach(button => {
         const win = windowByName(button.dataset.dock);
-        const visible = win && !win.classList.contains("is-closed") && !win.classList.contains("is-minimized") && (button.dataset.dock !== "console" || win.classList.contains("is-open"));
+        const visible = win && !win.classList.contains("is-closed") && !win.classList.contains("is-minimized") && ((button.dataset.dock !== "console" && button.dataset.dock !== "terminal") || win.classList.contains("is-open"));
         button.classList.toggle("active",Boolean(visible));
       });
     }
@@ -2609,13 +3115,15 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
     function applyLayout(index = (state.layoutIndex + 1) % 4,announce = true) {
       state.layoutIndex = index;
       const desk = $("#desktop").getBoundingClientRect(), gap = 7, w = desk.width, h = desk.height;
-      const tools = $("#win-tools"),chat = $("#win-chat"),editor = $("#win-editor"),preview = $("#win-preview"),consoleWin = $("#win-console");
+      const tools = $("#win-tools"),chat = $("#win-chat"),editor = $("#win-editor"),preview = $("#win-preview"),consoleWin = $("#win-console"),terminalWin = $("#win-terminal");
       [tools,chat,editor,preview].forEach(win => win.classList.remove("is-closed","is-minimized","is-maximized"));
       const set = (win,x,y,width,height) => Object.assign(win.style,{left:`${x}px`,top:`${y}px`,width:`${Math.max(210,width)}px`,height:`${Math.max(90,height)}px`,right:"",bottom:""});
       if (w < 760) {
         [tools,chat,editor,preview].forEach(win => set(win,gap,gap,w-gap*2,h-gap*2));
         consoleWin.classList.remove("is-open");
         consoleWin.classList.add("is-closed");
+        terminalWin.classList.remove("is-open");
+        terminalWin.classList.add("is-closed");
         focusWindow(editor);
         syncDock();
         saveLayout();
@@ -2636,6 +3144,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         [tools,chat,editor,preview].forEach((win,i)=>set(win,18+i*offset,12+i*offset,cw,ch));
       }
       consoleWin.classList.remove("is-open"); consoleWin.classList.add("is-closed");
+      terminalWin.classList.remove("is-open"); terminalWin.classList.add("is-closed");
       focusWindow(editor); syncDock(); saveLayout();
       if (announce) toast(["Quad studio","Build focus","Editor / preview split","Cascade"][index] + " layout applied.");
     }
@@ -2643,11 +3152,17 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
     function minimizeAll() { $$(".app-window").filter(win => !win.classList.contains("is-closed")).forEach(minimizeWindow); }
     function restoreAll() {
       ["tools","chat","editor","preview"].forEach(restoreWindow);
-      $("#win-console").classList.remove("is-open"); $("#win-console").classList.add("is-closed"); syncDock(); saveLayout();
+      $("#win-console").classList.remove("is-open"); $("#win-console").classList.add("is-closed");
+      $("#win-terminal").classList.remove("is-open"); $("#win-terminal").classList.add("is-closed");
+      syncDock(); saveLayout();
     }
     function toggleConsole() {
       const win=$("#win-console");
       if (win.classList.contains("is-open") && !win.classList.contains("is-closed")) closeWindow(win); else restoreWindow("console");
+    }
+    function toggleTerminal() {
+      const win=$("#win-terminal");
+      if (win.classList.contains("is-open") && !win.classList.contains("is-closed")) closeWindow(win); else restoreWindow("terminal");
     }
 
     function setViewport(value) {
@@ -2719,6 +3234,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
     function renderStaticLists() {
       featureNames.forEach(name=>{const row=document.createElement("div");row.className="feature-row";row.style.justifyContent="flex-start";row.innerHTML=`<span style="color:var(--accent);margin-right:8px;font-size:10px;">[ON]</span> <span>${name}</span>`;$("#feature-list").append(row)});
       shortcuts.forEach(([label,key])=>{const row=document.createElement("div");row.className="shortcut-row";const span=document.createElement("span");span.textContent=label;const k=document.createElement("kbd");k.textContent=key;row.append(span,k);$("#shortcut-table").append(row)});
+      renderSnippets();
     }
 
     function runDiagnostics() {
@@ -2733,7 +3249,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         ["Gemini model selected",Boolean($("#model-select").value)],
         ["Gemini connection verified",state.connected],
         ["API key excluded from storage",!Object.values(STORAGE).some(key=>(safeStorageGet(key,"")||"").includes(getKey()||"__NO_KEY__"))],
-        ["Window manager active",$$(".app-window").length===5],
+        ["Window manager active",$$(".app-window").length>=5],
         ["No duplicate element IDs",(()=>{const ids=$$("[id]").map(n=>n.id);return ids.length===new Set(ids).size})()]
       ];
       const list=$("#diagnostic-list");list.replaceChildren();
@@ -2755,6 +3271,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       const editor=$("#code-editor");
       const actions={
         new:newDocument,open:openFilePicker,save:()=>saveProject(),download:downloadCode,
+        "export-zip":exportProjectZip,"import-zip":()=>$("#zip-input").click(),
         undo:undoEdit,redo:redoEdit,
         run:executeCode,layout:()=>applyLayout(),palette:()=>{openDialog("palette-dialog");renderCommandPalette();setTimeout(()=>$("#palette-search").focus(),30)},
         settings:()=>openDialog("settings-dialog"),features:()=>openDialog("features-dialog"),format:formatHtmlSource,find:openFind,breadcrumb:showPathHint,
@@ -2764,7 +3281,8 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         "clear-chat":clearChat,"export-chat":exportChatOrWarn,retry:retryLast,"clear-console":()=>clearConsole(),
         "open-preview":openPreview,"preview-focus":togglePreviewFocus,"restore-all":restoreAll,"minimize-all":minimizeAll,
         fullscreen:toggleFullscreen,diagnostics:()=>{runDiagnostics();openDialog("diagnostics-dialog")},shortcuts:()=>openDialog("shortcuts-dialog"),
-        console:toggleConsole,"close-workspace":closeWorkspace
+        console:toggleConsole,"close-workspace":closeWorkspace,
+        terminal:toggleTerminal,"run-checks":runChecks,"clear-terminal":()=>clearTerminal()
       };
       actions[id]?.();
     }
@@ -2823,9 +3341,10 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         if(mod&&event.key.toLowerCase()==="r"){event.preventDefault();runCommand("run");return}
         if(mod&&event.key==="/"){event.preventDefault();runCommand("shortcuts");return}
         if(event.key==="F10"){event.preventDefault();togglePreviewFocus();return}
-        if(event.altKey&&["1","2","3","4","5"].includes(event.key)){event.preventDefault();
+        if(event.altKey&&["1","2","3","4","5","6"].includes(event.key)){event.preventDefault();
           const targets=["tools","chat","editor","preview"];
           if(event.key==="5")toggleConsole();
+          else if(event.key==="6")toggleTerminal();
           else restoreWindow(targets[Number(event.key)-1]);
           return;
         }
@@ -2897,7 +3416,16 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       $("#quick-open-trigger").addEventListener("click",openQuickOpen);
       $("#toggle-key").addEventListener("click",()=>{$("#api-key").type=$("#api-key").type==="password"?"text":"password"});
       $("#clear-key").addEventListener("click",()=>{
-        $("#api-key").value="";state.connected=false;state.models=[];resetModelSelect();setConnection("","Disconnected");$("#connect-btn").textContent="CONNECT";toast("Gemini key forgotten from memory.");
+        $("#api-key").value="";providerKeys[currentProvider()]="";state.connected=false;state.models=[];resetModelSelect();setConnection("","Disconnected");$("#connect-btn").textContent="CONNECT";toast("Key forgotten from memory.");
+      });
+      $("#provider-select").addEventListener("change",()=>{
+        const provider=currentProvider();state.settings.provider=provider;
+        $("#api-key").value=provider==="gemini"?"":(providerKeys[provider]||"");
+        $("#api-key").placeholder=provider==="ollama"?"No key needed for local Ollama":`${PROVIDER_LABELS[provider]} API key`;
+        $("#api-key").disabled=provider==="ollama";
+        state.connected=false;state.models=[];resetModelSelect();setConnection("",`Switched to ${PROVIDER_LABELS[provider]} — connect to continue`);
+        toast(`Provider set to ${PROVIDER_LABELS[provider]}.`);
+        safeStorageSet(STORAGE.settings, JSON.stringify(state.settings));
       });
       $("#api-key").addEventListener("keydown",event=>{if(event.key==="Enter")validateKey()});
       $("#model-select").addEventListener("change",()=>$("#chat-model-label").textContent=$("#model-select").value);
@@ -2917,6 +3445,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       $("#prompt-preset").addEventListener("change",applyPromptPreset);
       $$("[data-ai-action]").forEach(button=>button.addEventListener("click",()=>runAiQuickAction(button.dataset.aiAction)));
       $("#file-input").addEventListener("change",event=>{loadFile(event.target.files);event.target.value=""});
+      $("#zip-input").addEventListener("change",event=>{const file=event.target.files?.[0];event.target.value="";if(file)importProjectZip(file)});
       $("#code-editor").addEventListener("input",onEditorInput);
       $("#code-editor").addEventListener("beforeinput",_onBeforeInput);
       $("#code-editor").addEventListener("scroll",()=>$("#line-numbers").scrollTop=$("#code-editor").scrollTop);
@@ -2926,8 +3455,11 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       $("#include-source").addEventListener("change",syncSettingsFromUI);
       $("#wrap-code").addEventListener("change",syncSettingsFromUI);
       $("#idle-suggestions").addEventListener("change",syncSettingsFromUI);
-      ["accent-color","effect-range","temperature","max-tokens","system-prompt","autosave-toggle","motion-toggle","stream-toggle","history-toggle"].forEach(id=>{
-        $(`#${id}`).addEventListener(id==="system-prompt"?"change":"input",()=>{if(id==="temperature")$("#temperature-label").textContent=Number($("#temperature").value).toFixed(1);syncSettingsFromUI()});
+      $("#project-search-btn").addEventListener("click",()=>searchProject($("#project-search-input").value));
+      $("#project-search-input").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();searchProject(event.target.value)}});
+      $("#snippet-search").addEventListener("input",event=>renderSnippets(event.target.value));
+      ["accent-color","effect-range","temperature","max-tokens","system-prompt","autosave-toggle","motion-toggle","stream-toggle","history-toggle","ollama-host","openai-endpoint"].forEach(id=>{
+        $(`#${id}`).addEventListener(id==="system-prompt"||id==="ollama-host"||id==="openai-endpoint"?"change":"input",()=>{if(id==="temperature")$("#temperature-label").textContent=Number($("#temperature").value).toFixed(1);syncSettingsFromUI()});
       });
       $("#reset-settings").addEventListener("click",()=>{
         localStorage.removeItem(STORAGE.settings);location.reload();
