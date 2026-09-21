@@ -170,6 +170,26 @@
     .connection-dot.online{background:var(--green);box-shadow:0 0 10px var(--green),0 0 0 4px rgba(87,245,164,.1)}
     .connection-dot.busy{background:var(--gold);box-shadow:0 0 10px var(--gold);animation:pulse 1s infinite}
     .connection-dot.error{background:var(--red);box-shadow:0 0 10px var(--red)}
+    .usage-pill{display:flex;align-items:center;gap:7px;height:35px;padding:0 10px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.2);color:var(--text);cursor:pointer;transition:border-color .2s}
+    .usage-pill:hover{border-color:var(--cyan)}
+    .usage-bar-track{position:relative;width:64px;height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+    .usage-bar-fill{display:block;height:100%;width:0%;border-radius:inherit;background:#8bff2a;box-shadow:0 0 8px rgba(139,255,42,.5);transition:width .3s ease,background-color .3s ease,box-shadow .3s ease}
+    .usage-bar-fill.usage-mid{background:#ffe037;box-shadow:0 0 8px rgba(255,224,55,.5)}
+    .usage-bar-fill.usage-high{background:#ff8a3d;box-shadow:0 0 8px rgba(255,138,61,.5)}
+    .usage-bar-fill.usage-critical{background:#ff3b3b;box-shadow:0 0 10px rgba(255,59,59,.65);animation:usagePulse 1.1s ease-in-out infinite}
+    @keyframes usagePulse{50%{opacity:.55}}
+    #usage-bar-label{font:10px var(--mono);color:var(--muted);min-width:2.6em;text-align:right}
+    .usage-panel{position:fixed;top:56px;right:14px;z-index:120;width:min(360px,calc(100vw - 28px));border:1px solid var(--line);border-radius:14px;background:#0c1622;box-shadow:0 24px 60px rgba(0,0,0,.5);backdrop-filter:blur(16px)}
+    .usage-panel[hidden]{display:none}
+    .usage-panel-head{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-bottom:1px solid var(--line);font:11px var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+    .usage-panel-body{max-height:50vh;overflow:auto;padding:10px 13px;display:grid;gap:10px}
+    .usage-row{display:grid;gap:5px}
+    .usage-row-head{display:flex;justify-content:space-between;font:11px var(--mono);color:var(--text)}
+    .usage-row-head small{color:var(--muted)}
+    .usage-row .usage-bar-track{width:100%;height:7px}
+    .usage-panel-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px 13px;border-top:1px solid var(--line)}
+    .usage-hint{color:var(--muted);font:9px/1.4 var(--mono)}
+    .usage-empty{color:var(--muted);font:11px var(--mono);padding:6px 0}
     @keyframes pulse{50%{opacity:.35}}
 
     #desktop{position:relative;margin:7px 8px 5px;min-height:0;overflow:hidden;border-radius:14px}
@@ -389,6 +409,7 @@
     .setting-card{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}
     .setting-card.wide{grid-column:1/-1}
     .setting-card label{display:block;color:var(--muted);font:10px var(--mono);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px}
+    .setting-card .hint{margin:8px 0 0;color:var(--muted);font:10px/1.5 var(--mono);text-transform:none;letter-spacing:0}
     .setting-card input[type="text"],.setting-card input[type="number"],.setting-card textarea,.setting-card select{
       width:100%;border:1px solid var(--line);border-radius:9px;background:rgba(0,0,0,.22);color:var(--text);padding:8px;outline:0
     }
@@ -518,8 +539,24 @@
           <button id="custom-model" class="inline-icon" title="Enter a model ID" aria-label="Enter a custom model">✎</button>
         </div>
         <button id="connect-btn" class="glass-btn primary">CONNECT</button>
+        <button id="usage-toggle" class="usage-pill" type="button" title="Usage this session" aria-haspopup="dialog">
+          <span id="usage-bar-track" class="usage-bar-track"><span id="usage-bar-fill" class="usage-bar-fill"></span></span>
+          <span id="usage-bar-label">0%</span>
+        </button>
       </div>
     </header>
+
+    <div id="usage-panel" class="usage-panel" hidden role="dialog" aria-label="Usage this session">
+      <div class="usage-panel-head">
+        <b>Usage this session</b>
+        <button id="usage-panel-close" class="glass-btn icon tiny" aria-label="Close usage panel">×</button>
+      </div>
+      <div id="usage-panel-body" class="usage-panel-body"></div>
+      <div class="usage-panel-foot">
+        <span class="usage-hint">Estimated from request/response size · not billed totals</span>
+        <button id="usage-reset" class="glass-btn tiny">RESET</button>
+      </div>
+    </div>
 
     <section id="desktop" aria-label="Resizable app windows">
       <div id="drop-hud">DROP HTML, CSS, JS, JSON, TXT OR MD<br><small>Files load directly into the editor</small></div>
@@ -855,6 +892,11 @@
           <input id="openai-endpoint" type="text" value="https://api.openai.com/v1/chat/completions" spellcheck="false">
         </div>
         <div class="setting-card wide">
+          <label for="usage-budget">Session token budget <output id="usage-budget-label">200,000</output></label>
+          <input id="usage-budget" type="range" min="10000" max="2000000" step="10000" value="200000">
+          <p class="hint">Drives the usage bar in the header — an estimate from request/response character counts (÷4), reset when you reload or click RESET. Not a real billing total; check each provider's dashboard for that.</p>
+        </div>
+        <div class="setting-card wide">
           <label for="system-prompt">System instruction</label>
           <textarea id="system-prompt">You are an expert senior software engineer inside CodeN8R. Return exact, runnable, self-contained HTML/CSS/JavaScript when coding is requested. Use fenced code blocks. Preserve the user's intent, explain decisions concisely, and prioritize accessibility, security, performance, responsive design, and robust error handling.</textarea>
         </div>
@@ -977,6 +1019,7 @@
       strictSandbox: true,
       consoleEvents: 0,
       terminalProblems: 0,
+      usage: {}, // { providerId: { tokens, requests } } — session-only estimate, never persisted
       autoRunTimer: null,
       autosaveTimer: null,
       navigatorTimer: null,
@@ -1013,6 +1056,7 @@
         provider: "gemini",
         ollamaHost: "http://localhost:11434",
         openaiEndpoint: "https://api.openai.com/v1/chat/completions",
+        usageBudget: 200000,
         systemPrompt: "You are an expert senior software engineer inside CodeN8R. Return exact, runnable, self-contained HTML/CSS/JavaScript when coding is requested. Use fenced code blocks. Preserve the user's intent, explain decisions concisely, and prioritize accessibility, security, performance, responsive design, and robust error handling."
       }
     };
@@ -1259,6 +1303,8 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       $("#max-tokens").value = s.maxTokens;
       $("#ollama-host").value = s.ollamaHost;
       $("#openai-endpoint").value = s.openaiEndpoint;
+      $("#usage-budget").value = s.usageBudget;
+      $("#usage-budget-label").textContent = Number(s.usageBudget).toLocaleString();
       $("#provider-select").value = s.provider || "gemini";
       $("#api-key").disabled = s.provider === "ollama";
       $("#api-key").placeholder = s.provider === "ollama" ? "No key needed for local Ollama" : `${PROVIDER_LABELS[s.provider] || "Gemini"} API key`;
@@ -1284,6 +1330,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         maxTokens: Math.max(64, Math.min(65536, Number($("#max-tokens").value) || 8192)),
         ollamaHost: $("#ollama-host").value.trim() || "http://localhost:11434",
         openaiEndpoint: $("#openai-endpoint").value.trim() || "https://api.openai.com/v1/chat/completions",
+        usageBudget: Math.max(1000, Number($("#usage-budget").value) || 200000),
         systemPrompt: $("#system-prompt").value.trim(),
         autosave: $("#autosave-toggle").checked,
         reducedMotion: $("#motion-toggle").checked,
@@ -2759,6 +2806,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         if (!finalText.trim()) throw new Error(`${label} returned no text.`);
         pending.update(finalText,false);
         state.messages.push({role:"model",text:finalText});
+        recordUsage(provider, { inputChars: state.settings.systemPrompt + userText, outputChars: finalText });
         setSystemStatus(`${label} response complete`);
       } catch (error) {
         pending.update(error.message,false); pending.node.classList.add("error");
@@ -2834,6 +2882,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         if (!finalText.trim()) throw new Error("Gemini returned no text. The response may have been blocked by a safety filter.");
         pending.update(finalText,false);
         state.messages.push({role:"model",text:finalText});
+        recordUsage("gemini", { inputChars: JSON.stringify(payload), outputChars: finalText });
         setSystemStatus("Gemini response complete");
       } catch (error) {
         const message = error.name === "AbortError" ? "Generation stopped by the operator." : error.message;
@@ -2867,6 +2916,74 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         if (src.trim()) len += src.length + 60;
       }
       $("#prompt-tokens").textContent = Math.ceil(len / 4).toLocaleString();
+    }
+
+    // ---- Usage bar (session-only estimate, never persisted) ----
+    function estimateTokens(text) { return Math.ceil(String(text || "").length / 4); }
+
+    function recordUsage(providerId, { inputChars = "", outputChars = "" } = {}) {
+      const entry = state.usage[providerId] || (state.usage[providerId] = { tokens: 0, requests: 0 });
+      entry.tokens += estimateTokens(inputChars) + estimateTokens(outputChars);
+      entry.requests += 1;
+      renderUsage();
+    }
+
+    function totalUsageTokens() {
+      return Object.values(state.usage).reduce((sum, entry) => sum + entry.tokens, 0);
+    }
+
+    function usageBand(pct) {
+      if (pct >= 90) return "usage-critical";
+      if (pct >= 70) return "usage-high";
+      if (pct >= 40) return "usage-mid";
+      return "";
+    }
+
+    function renderUsage() {
+      const budget = Math.max(1, Number(state.settings.usageBudget) || 200000);
+      const used = totalUsageTokens();
+      const pct = Math.min(100, Math.round((used / budget) * 100));
+      const fill = $("#usage-bar-fill");
+      if (fill) {
+        fill.style.width = `${pct}%`;
+        fill.className = `usage-bar-fill ${usageBand(pct)}`.trim();
+      }
+      const label = $("#usage-bar-label");
+      if (label) label.textContent = `${pct}%`;
+      const pill = $("#usage-toggle");
+      if (pill) pill.title = `Usage this session: ~${used.toLocaleString()} / ${budget.toLocaleString()} tokens (${pct}%)`;
+      renderUsagePanel();
+    }
+
+    function renderUsagePanel() {
+      const body = $("#usage-panel-body");
+      if (!body) return;
+      body.replaceChildren();
+      const budget = Math.max(1, Number(state.settings.usageBudget) || 200000);
+      const providers = Object.entries(state.usage).sort((a, b) => b[1].tokens - a[1].tokens);
+      if (!providers.length) {
+        const empty = document.createElement("p"); empty.className = "usage-empty"; empty.textContent = "No AI requests sent yet this session.";
+        body.append(empty); return;
+      }
+      providers.forEach(([providerId, entry]) => {
+        const pct = Math.min(100, Math.round((entry.tokens / budget) * 100));
+        const row = document.createElement("div"); row.className = "usage-row";
+        const head = document.createElement("div"); head.className = "usage-row-head";
+        const name = document.createElement("span"); name.textContent = PROVIDER_LABELS[providerId] || providerId;
+        const meta = document.createElement("small"); meta.textContent = `~${entry.tokens.toLocaleString()} tok · ${entry.requests} req`;
+        head.append(name, meta);
+        const track = document.createElement("span"); track.className = "usage-bar-track";
+        const barFill = document.createElement("span"); barFill.className = `usage-bar-fill ${usageBand(pct)}`.trim(); barFill.style.width = `${pct}%`;
+        track.append(barFill);
+        row.append(head, track);
+        body.append(row);
+      });
+    }
+
+    function resetUsage() {
+      state.usage = {};
+      renderUsage();
+      toast("Usage counters reset.", "good");
     }
 
     // ---- Idle prompt suggestions (AI Studio style: pause typing → a suggestion appears) ----
@@ -3458,8 +3575,15 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       $("#project-search-btn").addEventListener("click",()=>searchProject($("#project-search-input").value));
       $("#project-search-input").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();searchProject(event.target.value)}});
       $("#snippet-search").addEventListener("input",event=>renderSnippets(event.target.value));
-      ["accent-color","effect-range","temperature","max-tokens","system-prompt","autosave-toggle","motion-toggle","stream-toggle","history-toggle","ollama-host","openai-endpoint"].forEach(id=>{
-        $(`#${id}`).addEventListener(id==="system-prompt"||id==="ollama-host"||id==="openai-endpoint"?"change":"input",()=>{if(id==="temperature")$("#temperature-label").textContent=Number($("#temperature").value).toFixed(1);syncSettingsFromUI()});
+      $("#usage-toggle").addEventListener("click",()=>{const panel=$("#usage-panel");panel.hidden=!panel.hidden;if(!panel.hidden)renderUsagePanel()});
+      $("#usage-panel-close").addEventListener("click",()=>{$("#usage-panel").hidden=true});
+      $("#usage-reset").addEventListener("click",resetUsage);
+      document.addEventListener("click",event=>{
+        const panel=$("#usage-panel");
+        if(!panel.hidden&&!panel.contains(event.target)&&event.target!==$("#usage-toggle")&&!$("#usage-toggle").contains(event.target))panel.hidden=true;
+      });
+      ["accent-color","effect-range","temperature","max-tokens","system-prompt","autosave-toggle","motion-toggle","stream-toggle","history-toggle","ollama-host","openai-endpoint","usage-budget"].forEach(id=>{
+        $(`#${id}`).addEventListener(id==="system-prompt"||id==="ollama-host"||id==="openai-endpoint"?"change":"input",()=>{if(id==="temperature")$("#temperature-label").textContent=Number($("#temperature").value).toFixed(1);if(id==="usage-budget"){$("#usage-budget-label").textContent=Number($("#usage-budget").value).toLocaleString();renderUsage()}syncSettingsFromUI()});
       });
       $("#reset-settings").addEventListener("click",()=>{
         localStorage.removeItem(STORAGE.settings);location.reload();
@@ -3504,6 +3628,7 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
 
     async function boot() {
       loadSettings();loadVersions();renderStaticLists();renderWorkspaceNavigator();setupWindowManager();setupDragDrop();setupKeyboard();setupLightning();bindEvents();
+      renderUsage();
       initialChat();
       const restored=restoreProject();
       if(!restored)$("#code-editor").value=templates.html;
