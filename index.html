@@ -322,11 +322,23 @@
       width:100%;height:100%;resize:none;border:0;outline:0;padding:13px 15px 80px;overflow:auto;white-space:pre;tab-size:2;
       background:transparent;color:#c6f7e0;caret-color:var(--cyan);font:var(--editor-size)/1.55 var(--mono)
     }
+    #find-highlight-layer{
+    grid-column:2;grid-row:1;z-index:2;min-width:0;min-height:0;margin:0;padding:13px 15px 80px;overflow:hidden;
+    pointer-events:none;white-space:pre;tab-size:2;overflow-wrap:normal;word-break:normal;
+    background:transparent;color:transparent;caret-color:transparent;font:var(--editor-size)/1.55 var(--mono)
+    }
+    #find-highlight-layer mark{background:rgba(99,231,255,.28);color:transparent;border-radius:2px;outline:1px solid rgba(99,231,255,.38)}
+    #find-highlight-layer mark.current-match{background:rgba(255,196,87,.48);outline:1px solid #ffc457}
+    #find-highlight-layer[hidden]{display:none}
     #code-editor.drop-target{box-shadow:inset 0 0 0 2px var(--cyan),inset 0 0 60px rgba(99,231,255,.08)}
     .editor-fade{position:absolute;right:12px;bottom:10px;pointer-events:none;color:rgba(99,231,255,.35);font:9px var(--mono)}
     .editor-breadcrumbs{display:flex;align-items:center;gap:7px;padding:7px 12px 0;border-top:1px solid var(--line);color:var(--muted);font:9px var(--mono);text-transform:uppercase;letter-spacing:.06em;overflow:auto;white-space:nowrap}
     .editor-breadcrumbs span{color:var(--muted)}
     .editor-breadcrumbs .crumb-current{color:var(--cyan)}
+    .editor-breadcrumbs button.crumb-btn{background:transparent;border:0;color:var(--muted);font:inherit;text-transform:inherit;letter-spacing:inherit;cursor:pointer;padding:0 2px;border-radius:4px}
+    .editor-breadcrumbs button.crumb-btn:hover{color:var(--cyan);text-decoration:underline}
+    .editor-breadcrumbs button.crumb-btn.crumb-current{color:var(--cyan)}
+    .editor-breadcrumbs .crumb-sep{color:var(--muted);opacity:.6}
     .workspace-list{display:grid;gap:6px;margin-top:8px}
     .workspace-list .mini-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.025);color:var(--text);cursor:pointer;text-align:left;font:11px/1.35 var(--mono)}
     .workspace-list .mini-item:hover{border-color:rgba(99,231,255,.42);background:rgba(99,231,255,.08)}
@@ -428,8 +440,13 @@
     .version-row time{color:var(--muted);font:9px var(--mono);margin-right:auto}
     .feature-list{grid-template-columns:1fr 1fr}
     .feature-row{font-size:11px}.feature-row::before{content:"⚡";color:var(--cyan);font-size:9px}
-    .search-grid{display:grid;grid-template-columns:1fr auto;gap:8px}
+    .search-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
     .search-grid input{min-width:0;border:1px solid var(--line);border-radius:9px;background:rgba(0,0,0,.22);color:var(--text);padding:9px;outline:0}
+    .search-grid input:focus{border-color:var(--cyan);box-shadow:0 0 2px rgba(99,231,255,.12)}
+    .find-options{display:flex;flex-wrap:wrap;align-items:center;gap:10px;grid-column:1/-1}
+    .find-options label{display:flex;align-items:center;gap:5px;color:var(--muted);font:10px var(--mono);cursor:pointer}
+    .find-options input[type="checkbox"]{accent-color:var(--cyan)}
+    .find-match-count{margin-left:auto;color:var(--cyan);font:10px var(--mono);white-space:nowrap}
 
     #toast-stack{position:fixed;right:15px;bottom:90px;z-index:1200;display:grid;gap:8px;width:min(350px,calc(100vw - 30px));pointer-events:none}
     .toast{padding:11px 13px;border-radius:11px;border:1px solid var(--line);background:rgba(7,18,30,.94);box-shadow:0 18px 45px rgba(0,0,0,.45);-webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px);font:11px/1.45 var(--mono);animation:toast-in .24s ease;transition:opacity .3s ease,transform .3s ease}
@@ -475,7 +492,66 @@
       .dock-item span{display:none}
       #statusbar .status-segment:nth-last-child(-n+2){display:none}
     }
-  </style>
+  /* Quick open — isolated qo- namespace. */
+#qo-overlay {
+position: fixed; inset: 0; z-index: 2147483647;
+display: grid; place-items: start center; padding: 12vh 16px 16px;
+background: rgba(2, 6, 14, .76); backdrop-filter: blur(5px);
+}
+#qo-overlay[hidden] { display: none !important; }
+#qo-dialog {
+width: min(640px, 100%); max-height: 74vh; overflow: hidden;
+color: #dbeafe; background: #0b1220; border: 1px solid #176579;
+border-radius: 10px; box-shadow: 0 0 32px #00e5ff22;
+font: 13px/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+#qo-heading {
+display: flex; justify-content: space-between; align-items: center;
+padding: 12px 16px; color: #67e8f9; border-bottom: 1px solid #203044;
+}
+#qo-close {
+border: 0; background: transparent; color: #94a3b8; cursor: pointer;
+font: inherit; padding: 2px 8px;
+}
+#qo-input {
+display: block; width: 100%; box-sizing: border-box; padding: 15px 16px;
+background: #080f1c; color: #eefaff; border: 0;
+border-bottom: 1px solid #203044; outline: none; font: inherit;
+}
+#qo-input:focus { box-shadow: inset 0 -2px #22d3ee; }
+#qo-list { max-height: 48vh; overflow-y: auto; padding: 6px; }
+#qo-list .qo-option {
+display: flex; align-items: center; gap: 12px; padding: 9px 10px;
+border-radius: 5px; cursor: pointer; border: 1px solid transparent;
+}
+#qo-list .qo-option[aria-selected="true"] {
+background: #123044; border-color: #16768b;
+}
+#qo-list .qo-icon { color: #22d3ee; width: 24px; text-align: center; }
+#qo-list .qo-details { min-width: 0; }
+#qo-list .qo-name, #qo-list .qo-path {
+display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+#qo-list .qo-path { color: #8297b1; font-size: 11px; }
+#qo-status {
+padding: 9px 16px; color: #94a3b8; border-top: 1px solid #203044;
+}
+    /* Go to definition popup */
+    .gtod-popup{
+      position:fixed;z-index:1000;min-width:280px;max-width:min(560px,90vw);max-height:min(400px,70vh);
+      overflow:auto;background:var(--glass-strong);border:1px solid var(--line-hot);border-radius:12px;
+      box-shadow:var(--shadow),0 0 24px rgba(255,152,0,.15);padding:10px 12px;
+      font:12px/1.5 var(--mono);color:var(--text);
+    }
+    .gtod-popup header{display:flex;align-items:center;gap:8px;margin-bottom:8px;color:var(--accent);font-weight:600}
+    .gtod-popup .gtod-close{margin-left:auto;background:transparent;border:1px solid var(--line);border-radius:6px;color:var(--muted);cursor:pointer;padding:2px 8px;font:inherit}
+    .gtod-popup .gtod-close:hover{color:var(--text);border-color:var(--line-hot)}
+    .gtod-popup .gtod-item{display:block;width:100%;text-align:left;background:transparent;border:1px solid transparent;border-radius:8px;color:var(--text);cursor:pointer;padding:6px 8px;font:inherit;margin:2px 0}
+    .gtod-popup .gtod-item:hover{background:rgba(255,152,0,.08);border-color:var(--line)}
+    .gtod-popup .gtod-line{color:var(--muted);margin-right:8px}
+    .gtod-popup .gtod-code{white-space:pre-wrap;word-break:break-all}
+    .gtod-popup .gtod-none{color:var(--muted);padding:8px 4px}
+</style>
 </head>
 <body>
   <canvas id="electric-canvas" aria-hidden="true"></canvas>
@@ -741,8 +817,9 @@
         <div class="tab-strip" id="editor-tabs" aria-label="Open documents"></div>
         <div class="window-body" id="editor-body">
           <div id="editor-shell">
-            <pre id="line-numbers" aria-hidden="true">1</pre>
-            <textarea id="code-editor" aria-label="HTML source editor" spellcheck="false"></textarea>
+          <pre id="line-numbers" aria-hidden="true">1</pre>
+          <pre id="find-highlight-layer" aria-hidden="true" hidden></pre>
+          <textarea id="code-editor" aria-label="HTML source editor" spellcheck="false"></textarea>
           </div>
           <span class="editor-fade">DROP CODE / FILES HERE</span>
         </div>
@@ -938,12 +1015,17 @@
     <div class="dialog-head"><h2>Find &amp; Replace</h2><button class="glass-btn icon tiny" data-close-dialog>×</button></div>
     <div class="dialog-body">
       <div class="search-grid">
-        <input id="find-input" placeholder="Find text">
-        <button id="find-next" class="glass-btn">FIND NEXT</button>
-        <input id="replace-input" placeholder="Replace with">
-        <button id="replace-one" class="glass-btn">REPLACE</button>
-        <label class="check-row" style="font-size:11px;padding:4px 0"><input id="find-regex" type="checkbox"> Use regex</label>
-        <button id="replace-all" class="glass-btn primary">REPLACE ALL</button>
+        <input id="find-input" placeholder="Find text" aria-label="Find text">
+        <button id="find-next" class="glass-btn" type="button">FIND NEXT</button>
+        <input id="replace-input" placeholder="Replace with" aria-label="Replace with">
+        <button id="replace-one" class="glass-btn" type="button">REPLACE</button>
+        <div class="find-options">
+        <label><input id="find-case-sensitive" type="checkbox"> Match case</label>
+        <label><input id="find-whole-word" type="checkbox"> Whole word</label>
+        <label><input id="find-regex" type="checkbox"> Use regex</label>
+        <span id="find-match-count" class="find-match-count" aria-live="polite">0 matches</span>
+        </div>
+        <button id="replace-all" class="glass-btn primary" type="button">REPLACE ALL</button>
       </div>
       <p id="find-status" class="find-status-note">Enter a search term.</p>
     </div>
@@ -1547,23 +1629,108 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       renderBreadcrumbs();
     }
 
+    /* Breadcrumb symbol path: enclosing scopes at cursor */
+    function buildSymbolTrail(text, cursorPos) {
+      const lines = text.split('\n');
+      let cursorLine = 0, count = 0;
+      for (let i = 0; i < lines.length; i++) {
+        if (count + lines[i].length + 1 > cursorPos) { cursorLine = i; break; }
+        count += lines[i].length + 1;
+        cursorLine = i;
+      }
+      const stack = [];
+      const trail = [];
+      let depth = 0;
+      const defRe = /^\s*(?:export\s+|default\s+|async\s+)*(function\s*\*?\s*([A-Za-z_$][\w$]*)|class\s+([A-Za-z_$][\w$]*)|(?:const|let|var)\s+([A-Za-z_$][\w$]*)\s*=\s*(?:async\s*)?(?:\([^)]*\)\s*=>|function\s*\*?\s*\())/;
+      const blockRe = /^\s*(if|for|while|switch|try|catch|finally|with)\b/;
+      for (let i = 0; i <= cursorLine; i++) {
+        const line = lines[i];
+        // pop scopes closed before/at this line by counting braces
+        let opens = 0, closes = 0, inStr = null;
+        for (let c = 0; c < line.length; c++) {
+          const ch = line[c];
+          if (inStr) {
+            if (ch === '\\' ) { c++; continue; }
+            if (ch === inStr) inStr = null;
+            continue;
+          }
+          if (ch === '"' || ch === "'" || ch === '`') { inStr = ch; continue; }
+          if (ch === '/' && line[c + 1] === '/') break;
+          if (ch === '{') opens++;
+          if (ch === '}') closes++;
+        }
+        // apply net brace change; pop scopes only on net closes
+        depth += opens - closes;
+        if (depth < 0) depth = 0;
+        if (closes > opens) {
+          while (stack.length && stack[stack.length - 1].depth > depth) stack.pop();
+        }
+        // detect new scope definitions; their body lives at the new depth
+        let m = defRe.exec(line);
+        if (m && opens > 0) {
+          const name = m[2] || m[3] || m[4] || '(anonymous)';
+          const kind = m[2] ? 'function' : m[3] ? 'class' : 'variable';
+          stack.push({ name, kind, line: i + 1, depth });
+        } else if (blockRe.test(line) && opens > 0) {
+          const bm = blockRe.exec(line);
+          stack.push({ name: bm[1] + ' block', kind: 'block', line: i + 1, depth });
+        }
+      }
+      // stack now holds exactly the scopes enclosing the cursor
+      for (const s of stack) trail.push(s);
+      return trail;
+    }
+    function jumpToLine(lineNum) {
+      const editor = $("#code-editor");
+      if (!editor) return;
+      const lines = editor.value.split('\n');
+      let pos = 0;
+      for (let i = 0; i < lineNum - 1 && i < lines.length; i++) pos += lines[i].length + 1;
+      editor.focus({ preventScroll: true });
+      editor.setSelectionRange(pos, pos);
+      const style = getComputedStyle(editor);
+      const lh = parseFloat(style.lineHeight) || (parseFloat(style.fontSize) || 14) * 1.2;
+      editor.scrollTop = Math.max(0, (lineNum - 1) * lh - editor.clientHeight / 3);
+      if (typeof updateCursor === 'function') updateCursor();
+    }
     // Memoize last rendered trail to skip unnecessary DOM rebuilds
     renderBreadcrumbs._lastTrail = "";
     function renderBreadcrumbs() {
       const helpers = window.EditorHelpers || {};
-      const trail = helpers.buildBreadcrumbTrail ? helpers.buildBreadcrumbTrail(state.fileName, "Workspace") : ["Workspace", state.fileName || "untitled.html"];
-      const trailKey = trail.join(">");
+      const fileTrail = helpers.buildBreadcrumbTrail ? helpers.buildBreadcrumbTrail(state.fileName, "Workspace") : ["Workspace", state.fileName || "untitled.html"];
+      const editor = $("#code-editor");
+      let symbols = [];
+      try {
+        if (editor) symbols = buildSymbolTrail(editor.value, editor.selectionStart);
+      } catch (e) { symbols = []; }
+      const trailKey = fileTrail.join(">") + "|" + symbols.map(s => s.name + ":" + s.line).join(">");
       const container = $("#editor-breadcrumbs");
       if (!container) return;
       if (trailKey === renderBreadcrumbs._lastTrail) return; // nothing changed
       renderBreadcrumbs._lastTrail = trailKey;
       container.replaceChildren();
-      trail.forEach((crumb, index) => {
+      const addSep = () => {
+        const sep = document.createElement("span");
+        sep.className = "crumb-sep";
+        sep.textContent = "\u203a";
+        container.append(sep, document.createTextNode(" "));
+      };
+      fileTrail.forEach((crumb, index) => {
+        if (index) addSep();
         const node = document.createElement("span");
         node.textContent = crumb;
-        if (index === trail.length - 1) node.classList.add("crumb-current");
-        if (index) node.prepend(document.createTextNode("\u203a "));
+        if (index === fileTrail.length - 1 && !symbols.length) node.classList.add("crumb-current");
         container.append(node);
+      });
+      symbols.forEach((sym, index) => {
+        addSep();
+        const btn = document.createElement("button");
+        btn.className = "crumb-btn" + (index === symbols.length - 1 ? " crumb-current" : "");
+        btn.type = "button";
+        btn.title = sym.kind + " at line " + sym.line + " — click to jump";
+        btn.textContent = sym.name;
+        btn.addEventListener("click", () => jumpToLine(sym.line));
+        container.append(btn);
       });
     }
 
@@ -2433,44 +2600,231 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       editor.setSelectionRange(start + offset, end + offset);
       onEditorInput();
     }
+    /* Go to definition (F12 / Ctrl+click) */
+    let gtodPopup = null;
+    function gtodClosePopup() {
+      if (gtodPopup) { gtodPopup.remove(); gtodPopup = null; }
+    }
+    function gtodSymbolAt(editor) {
+      const text = editor.value;
+      let start = editor.selectionStart, end = editor.selectionEnd;
+      const ident = /[A-Za-z0-9_$]/;
+      if (end > start) {
+        const sel = text.slice(start, end);
+        return /^[A-Za-z_$][\w$]*$/.test(sel) ? { name: sel, start } : null;
+      }
+      if (!ident.test(text[start] || '') && ident.test(text[start - 1] || '')) start--;
+      if (!ident.test(text[start] || '')) return null;
+      end = start;
+      while (start > 0 && ident.test(text[start - 1])) start--;
+      while (end < text.length && ident.test(text[end])) end++;
+      const name = text.slice(start, end);
+      return /^[A-Za-z_$]/.test(name) ? { name, start } : null;
+    }
+    function gtodFindDefinitions(text, name) {
+      const esc = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const b = '(?![\\w$])';
+      const patterns = [
+        new RegExp('^\\s*(?:function\\s*\\*?\\s*|class\\s+)(' + esc + ')' + b),
+        new RegExp('^\\s*(?:const|let|var)\\s+(' + esc + ')' + b),
+        new RegExp('^\\s*(?:async\\s+)?(' + esc + ')\\s*\\([^;]*\\)\\s*(?::[^{=]+)?\\s*\\{'),
+        new RegExp('^\\s*(' + esc + ')\\s*[:=]\\s*(?:\\([^)]*\\)|[^=])'),
+      ];
+      const found = [];
+      let offset = 0;
+      text.split('\n').forEach((line, i) => {
+        for (const p of patterns) {
+          const m = p.exec(line);
+          if (!m) continue;
+          found.push({ line: i + 1, start: offset + m.index + m[0].indexOf(m[1]), name, code: line.trim().slice(0, 120) });
+          break;
+        }
+        offset += line.length + 1;
+      });
+      return found;
+    }
+    function gtodJump(editor, def) {
+      gtodClosePopup();
+      editor.focus({ preventScroll: true });
+      editor.setSelectionRange(def.start, def.start + def.name.length);
+      const style = getComputedStyle(editor);
+      const lh = parseFloat(style.lineHeight) || (parseFloat(style.fontSize) || 14) * 1.2;
+      editor.scrollTop = Math.max(0, (def.line - 1) * lh - editor.clientHeight / 3);
+      if (typeof updateCursor === 'function') updateCursor();
+    }
+    function gtodShowPopup(editor, name, defs, x, y) {
+      gtodClosePopup();
+      const popup = document.createElement('div');
+      popup.className = 'gtod-popup';
+      popup.setAttribute('role', 'dialog');
+      popup.setAttribute('aria-label', 'Definition: ' + name);
+      const header = document.createElement('header');
+      header.textContent = defs.length ? name + ' — ' + defs.length + ' definition' + (defs.length === 1 ? '' : 's') : name;
+      const close = document.createElement('button');
+      close.className = 'gtod-close'; close.textContent = 'Close';
+      close.addEventListener('click', gtodClosePopup);
+      header.appendChild(close);
+      popup.appendChild(header);
+      if (!defs.length) {
+        const none = document.createElement('div');
+        none.className = 'gtod-none';
+        none.textContent = 'No local definition found. Search covers this file only.';
+        popup.appendChild(none);
+      }
+      defs.forEach(def => {
+        const btn = document.createElement('button');
+        btn.className = 'gtod-item';
+        const line = document.createElement('span');
+        line.className = 'gtod-line'; line.textContent = 'line ' + def.line;
+        const code = document.createElement('span');
+        code.className = 'gtod-code'; code.textContent = def.code;
+        btn.append(line, code);
+        btn.addEventListener('click', () => gtodJump(editor, def));
+        popup.appendChild(btn);
+      });
+      document.body.appendChild(popup);
+      const r = editor.getBoundingClientRect();
+      popup.style.left = Math.max(8, Math.min(x !== undefined ? x : r.left + 16, innerWidth - popup.offsetWidth - 8)) + 'px';
+      popup.style.top = Math.max(8, Math.min(y !== undefined ? y + 12 : r.top + 32, innerHeight - popup.offsetHeight - 8)) + 'px';
+      gtodPopup = popup;
+    }
+    function gtodNavigate(editor, point) {
+      const sym = gtodSymbolAt(editor);
+      if (!sym) return false;
+      const defs = gtodFindDefinitions(editor.value, sym.name);
+      if (defs.length === 1) gtodJump(editor, defs[0]);
+      else gtodShowPopup(editor, sym.name, defs, point && point.x, point && point.y);
+      return true;
+    }
     function buildFindPattern(term) {
-      const useRegex = $("#find-regex")?.checked;
-      try { return new RegExp(useRegex ? term : escapeRegExp(term), "gi"); }
-      catch { return null; }
+    const useRegex = $("#find-regex")?.checked;
+    const caseSensitive = $("#find-case-sensitive")?.checked;
+    const wholeWord = $("#find-whole-word")?.checked;
+    try {
+    let source = useRegex ? term : escapeRegExp(term);
+    if (wholeWord) source = "\\b(?:" + source + ")\\b";
+    return new RegExp(source, caseSensitive ? "g" : "gi");
+    } catch { return null; }
+    }
+
+    function updateFindHighlights() {
+    const editor = $("#code-editor");
+    const layer = $("#find-highlight-layer");
+    const counter = $("#find-match-count");
+    if (!editor || !layer) return [];
+    const term = $("#find-input")?.value || "";
+    layer.replaceChildren();
+    if (!term) {
+    layer.hidden = true;
+    if (counter) counter.textContent = "0 matches";
+    return [];
+    }
+    const pattern = buildFindPattern(term);
+    if (!pattern) {
+    layer.hidden = true;
+    if (counter) counter.textContent = "Invalid pattern";
+    if ($("#find-status")) $("#find-status").textContent = "Invalid regex pattern";
+    return [];
+    }
+    const source = editor.value;
+    const matches = [...source.matchAll(pattern)];
+    const fragment = document.createDocumentFragment();
+    let cursor = 0;
+    matches.forEach(match => {
+    const start = match.index;
+    const end = start + match[0].length;
+    if (end <= start) return;
+    fragment.append(document.createTextNode(source.slice(cursor, start)));
+    const mark = document.createElement("mark");
+    mark.textContent = match[0];
+    if (start === editor.selectionStart && end === editor.selectionEnd) mark.classList.add("current-match");
+    fragment.append(mark);
+    cursor = end;
+    });
+    fragment.append(document.createTextNode(source.slice(cursor)));
+    layer.append(fragment);
+    layer.hidden = false;
+    layer.scrollTop = editor.scrollTop;
+    layer.scrollLeft = editor.scrollLeft;
+    if (counter) counter.textContent = matches.length + " match" + (matches.length === 1 ? "" : "es");
+    return matches;
     }
     function findNext() {
-      const editor = $("#code-editor"), term = $("#find-input").value;
-      if (!term) { $("#find-status").textContent = "Enter a search term."; return false; }
-      const pattern = buildFindPattern(term);
-      if (!pattern) { $("#find-status").textContent = "Invalid regex pattern."; return false; }
-      const allMatches = [...editor.value.matchAll(pattern)];
-      if (!allMatches.length) { $("#find-status").textContent = "No match found."; return false; }
-      const cursor = editor.selectionEnd;
-      const match = allMatches.find(m => m.index >= cursor) || allMatches[0];
-      const matchIndex = allMatches.indexOf(match) + 1;
-      editor.focus(); editor.setSelectionRange(match.index, match.index + match[0].length);
-      $("#find-status").textContent = `Match ${matchIndex} of ${allMatches.length}.`; updateCursor(); return true;
+    const editor = $("#code-editor"), term = $("#find-input").value;
+    if (!term) {
+    $("#find-status").textContent = "Enter a search term.";
+    updateFindHighlights();
+    return false;
+    }
+    const pattern = buildFindPattern(term);
+    if (!pattern) {
+    $("#find-status").textContent = "Invalid regex pattern.";
+    updateFindHighlights();
+    return false;
+    }
+    const allMatches = [...editor.value.matchAll(pattern)].filter(m => m[0].length > 0);
+    updateFindHighlights();
+    if (!allMatches.length) {
+    $("#find-status").textContent = "No match found.";
+    return false;
+    }
+    const cursor = editor.selectionEnd;
+    const match = allMatches.find(m => m.index >= cursor) || allMatches[0];
+    const matchIndex = allMatches.indexOf(match) + 1;
+    editor.focus();
+    editor.setSelectionRange(match.index, match.index + match[0].length);
+    updateFindHighlights();
+    $("#find-status").textContent = `Match ${matchIndex} of ${allMatches.length}.`;
+    updateCursor();
+    return true;
     }
     function replaceOne() {
-      const editor = $("#code-editor"), term = $("#find-input").value;
-      if (!term) return;
-      const pattern = buildFindPattern(term);
-      if (!pattern) return;
-      const selected = editor.value.slice(editor.selectionStart, editor.selectionEnd);
-      pattern.lastIndex = 0;
-      if (!pattern.test(selected) && !findNext()) return;
-      editor.setRangeText($("#replace-input").value, editor.selectionStart, editor.selectionEnd, "end"); onEditorInput(); findNext();
+    const editor = $("#code-editor"), term = $("#find-input").value;
+    if (!term) {
+    $("#find-status").textContent = "Enter a search term.";
+    return;
+    }
+    const pattern = buildFindPattern(term);
+    if (!pattern) {
+    $("#find-status").textContent = "Invalid regex pattern.";
+    updateFindHighlights();
+    return;
+    }
+    const start = editor.selectionStart, end = editor.selectionEnd;
+    const selected = editor.value.slice(start, end);
+    pattern.lastIndex = 0;
+    const selectedMatch = selected && pattern.test(selected);
+    if (!selectedMatch && !findNext()) return;
+    createSnapshot("Before replace");
+    editor.setRangeText($("#replace-input").value, editor.selectionStart, editor.selectionEnd, "end");
+    onEditorInput();
+    updateFindHighlights();
+    findNext();
     }
     function replaceAll() {
-      const editor = $("#code-editor"), term = $("#find-input").value;
-      if (!term) return;
-      const pattern = buildFindPattern(term);
-      if (!pattern) { $("#find-status").textContent = "Invalid regex pattern."; return; }
-      const matches = [...editor.value.matchAll(pattern)].length;
-      if (!matches) { $("#find-status").textContent = "No matches found."; return; }
-      createSnapshot("Before replace all");
-      editor.value = editor.value.replace(pattern, $("#replace-input").value); onEditorInput();
-      $("#find-status").textContent = `Replaced ${matches} match${matches === 1 ? "" : "es"}.`;
+    const editor = $("#code-editor"), term = $("#find-input").value;
+    if (!term) {
+    $("#find-status").textContent = "Enter a search term.";
+    updateFindHighlights();
+    return;
+    }
+    const pattern = buildFindPattern(term);
+    if (!pattern) {
+    $("#find-status").textContent = "Invalid regex pattern.";
+    updateFindHighlights();
+    return;
+    }
+    const matches = [...editor.value.matchAll(pattern)].filter(m => m[0].length > 0).length;
+    if (!matches) {
+    $("#find-status").textContent = "No matches found.";
+    updateFindHighlights();
+    return;
+    }
+    createSnapshot("Before replace all");
+    editor.value = editor.value.replace(pattern, $("#replace-input").value);
+    onEditorInput();
+    updateFindHighlights();
+    $("#find-status").textContent = `Replaced ${matches} match${matches === 1 ? "" : "es"}.`;
     }
 
     function appendMessage(sender, text, role = "assistant", options = {}) {
@@ -3454,6 +3808,8 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         if(mod&&event.key.toLowerCase()==="o"){event.preventDefault();runCommand("open");return}
         if(mod&&event.key.toLowerCase()==="n"){event.preventDefault();runCommand("new");return}
         if(mod&&event.key.toLowerCase()==="f"){event.preventDefault();runCommand("find");return}
+        if(mod&&event.key.toLowerCase()==="h")
+        {event.preventDefault();runCommand("find");setTimeout(()=>$("#replace-input")?.focus(),0);return}
         if(mod&&event.key.toLowerCase()==="g"){event.preventDefault();goToLine();return}
         if(mod&&event.key.toLowerCase()==="r"){event.preventDefault();runCommand("run");return}
         if(mod&&event.key==="/"){event.preventDefault();runCommand("shortcuts");return}
@@ -3468,6 +3824,9 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
         if(event.key==="Escape"&&document.body.classList.contains("preview-focus"))togglePreviewFocus();
       });
       $("#code-editor").addEventListener("keydown",event=>{
+        if(event.key==="F12"&&!event.ctrlKey&&!event.metaKey&&!event.shiftKey&&!event.altKey){
+          event.preventDefault();event.stopPropagation();gtodNavigate(event.currentTarget);return;
+        }
         if(event.key==="Tab"){
           event.preventDefault();const editor=event.currentTarget,start=editor.selectionStart,end=editor.selectionEnd;
           if(start!==end){
@@ -3594,8 +3953,34 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
       $("#preview-zoom-in").addEventListener("click",()=>changePreviewZoom(.1));
       $("#sandbox-toggle").addEventListener("click",toggleSandbox);
       $("#find-next").addEventListener("click",findNext);$("#replace-one").addEventListener("click",replaceOne);$("#replace-all").addEventListener("click",replaceAll);
-      $("#find-input").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();findNext();}});
-      $("#replace-input").addEventListener("keydown",event=>{if(event.key==="Enter"){event.preventDefault();replaceOne();}});
+      $("#find-input").addEventListener("input",()=>{updateFindHighlights();$("#find-status").textContent="";});
+      $("#find-input").addEventListener("keydown",event=>{if(event.key==="Enter")
+      {event.preventDefault();findNext();}});
+      $("#replace-input").addEventListener("keydown",event=>{if(event.key==="Enter")
+      {event.preventDefault();replaceOne();}});
+      /* Go to definition: Ctrl+click */
+      $("#code-editor").addEventListener("click",event=>{
+        if(!(event.ctrlKey||event.metaKey)||event.altKey||event.shiftKey||event.button!==0)return;
+        const editor=event.currentTarget, point={x:event.clientX,y:event.clientY};
+        requestAnimationFrame(()=>{ if(document.activeElement===editor)gtodNavigate(editor,point); });
+      });
+      document.addEventListener("keydown",event=>{
+        if(event.key==="Escape"&&typeof gtodPopup!=="undefined"&&gtodPopup){event.stopPropagation();gtodClosePopup();}
+      },true);
+      document.addEventListener("pointerdown",event=>{
+        if(typeof gtodPopup!=="undefined"&&gtodPopup&&!gtodPopup.contains(event.target))gtodClosePopup();
+      },true);
+      ["find-case-sensitive","find-whole-word","find-regex"].forEach(id=>$("#"+id).addEventListener("change",
+      ()=>{updateFindHighlights();$("#find-status").textContent="";}));
+      const findEditor=$("#code-editor"),findLayer=$("#find-highlight-layer"),findDialog=$("#find-dialog");
+      findEditor.addEventListener("input",()=>
+      {if(findDialog&&findDialog.getClientRects().length)updateFindHighlights();});
+      findEditor.addEventListener("scroll",()=>
+      {findLayer.scrollTop=findEditor.scrollTop;findLayer.scrollLeft=findEditor.scrollLeft;});
+      const syncFindVisibility=()=>{if(!findDialog||!findLayer)return;const
+      visible=!!findDialog.getClientRects().length;findLayer.hidden=!visible;if(visible)updateFindHighlights();};
+      if(findDialog){new MutationObserver(syncFindVisibility).observe(findDialog,
+      {attributes:true,attributeFilter:["style","class","hidden","open"]});syncFindVisibility();}
       $("#palette-search").addEventListener("input",event=>renderCommandPalette(event.target.value));
       $("#quick-open-search").addEventListener("input",event=>renderQuickOpen(event.target.value));
       $("#quick-open-search").addEventListener("keydown",event=>{
@@ -3645,5 +4030,373 @@ function size(){c.width=innerWidth*devicePixelRatio;c.height=innerHeight*deviceP
     boot();
   })();
   </script>
+  <style id="coden8r-cmdk-css">
+  #coden8r-cmdk-overlay{position:fixed;inset:0;z-index:99999;display:flex;justify-content:center;align-items:flex-start;padding:12vh 16px 16px;background:rgba(5,6,8,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+  #coden8r-cmdk-overlay[hidden]{display:none!important}
+  #coden8r-cmdk-box{width:min(620px,100%);background:var(--bg-1,#0b0c10);border:1px solid rgba(99,231,255,.35);border-radius:10px;box-shadow:0 0 0 1px rgba(99,231,255,.12),0 0 32px rgba(99,231,255,.18),0 24px 64px rgba(0,0,0,.6);overflow:hidden;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  #coden8r-cmdk-input{width:100%;box-sizing:border-box;background:transparent;border:0;border-bottom:1px solid rgba(99,231,255,.18);color:#d9f6ff;font-size:15px;padding:14px 16px;outline:none;font-family:inherit}
+  #coden8r-cmdk-input::placeholder{color:rgba(217,246,255,.35)}
+  #coden8r-cmdk-list{list-style:none;margin:0;padding:6px;max-height:320px;overflow-y:auto}
+  #coden8r-cmdk-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:9px 12px;border-radius:6px;color:#b8c4d0;font-size:13.5px;cursor:pointer;border:1px solid transparent}
+  #coden8r-cmdk-list li .k{color:rgba(184,196,208,.5);font-size:11.5px;white-space:nowrap}
+  #coden8r-cmdk-list li[aria-selected="true"]{background:rgba(99,231,255,.12);border-color:rgba(99,231,255,.35);color:#eafcff;box-shadow:inset 0 0 12px rgba(99,231,255,.08)}
+  #coden8r-cmdk-list li[aria-selected="true"] .k{color:#63e7ff}
+  #coden8r-cmdk-empty{padding:16px;text-align:center;color:rgba(184,196,208,.5);font-size:13px}
+  #coden8r-cmdk-foot{display:flex;gap:16px;padding:8px 14px;border-top:1px solid rgba(99,231,255,.12);color:rgba(184,196,208,.45);font-size:11px}
+  #coden8r-cmdk-foot b{color:#63e7ff;font-weight:600}
+  </style>
+  <div id="coden8r-cmdk-overlay" hidden>
+    <div id="coden8r-cmdk-box" role="dialog" aria-modal="true" aria-label="Command palette">
+      <input id="coden8r-cmdk-input" type="text" placeholder="Type a command..." autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Search commands" role="combobox" aria-expanded="true" aria-controls="coden8r-cmdk-list">
+      <ul id="coden8r-cmdk-list" role="listbox" aria-label="Commands"></ul>
+      <div id="coden8r-cmdk-foot"><span><b>Up/Down</b> navigate</span><span><b>Enter</b> run</span><span><b>Esc</b> close</span></div>
+    </div>
+  </div>
+  <script>
+  (function(){
+"use strict";
+if(window.__coden8rCmdk)return;
+window.__coden8rCmdk=true;
+var ACCENTS=['#63e7ff','#ff9800','#b967ff','#00ffa3','#ff5c7a'];
+var accentIdx=0;
+function findBtn(re){
+  var btns=document.querySelectorAll('button');
+  for(var i=0;i<btns.length;i++){
+    var b=btns[i];
+    var t=(b.getAttribute('title')||'')+' '+(b.getAttribute('aria-label')||'')+' '+(b.textContent||'');
+    if(re.test(t))return b;
+  }
+  return null;
+}
+function clickBtn(re){var b=findBtn(re);if(b){b.click();return true;}return false;}
+function cycleAccent(){
+  accentIdx=(accentIdx+1)%ACCENTS.length;
+  var c=ACCENTS[accentIdx];
+  var rs=document.documentElement.style;
+  ['--accent','--electric','--neon','--primary','--theme-accent','--accent-color'].forEach(function(v){rs.setProperty(v,c);});
+  var inp=document.querySelector('input[type="color"]');
+  if(inp){try{inp.value=c;inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));}catch(e){}}
+}
+var COMMANDS=[
+  {name:'Run code',hint:'Ctrl+R',run:function(){clickBtn(/compile and run/i);}},
+  {name:'Save locally',hint:'Ctrl+S',run:function(){clickBtn(/save locally/i);}},
+  {name:'New document',hint:'Ctrl+N',run:function(){clickBtn(/new document/i);}},
+  {name:'Open file',hint:'Ctrl+O',run:function(){clickBtn(/open or drop a file/i);}},
+  {name:'Cycle window layout',hint:'Toggle panels',run:function(){clickBtn(/cycle window layouts/i);}},
+  {name:'Switch theme accent',hint:'Cycle neon color',run:cycleAccent},
+  {name:'Toggle fullscreen',hint:'',run:function(){clickBtn(/toggle app fullscreen/i);}},
+  {name:'Open settings',hint:'',run:function(){clickBtn(/\bsettings\b/i);}},
+  {name:'Tidy HTML',hint:'',run:function(){clickBtn(/\btidy\b/i);}}
+];
+function fuzzyScore(name,q){
+  name=name.toLowerCase();q=q.toLowerCase();
+  if(!q)return 1;
+  var last=-1,score=0;
+  for(var i=0;i<q.length;i++){
+    var c=q[i],found=false;
+    for(var j=last+1;j<name.length;j++){
+      if(name[j]===c){found=true;score+=(last+1===j)?2:1;if(j===0)score+=2;last=j;break;}
+    }
+    if(!found)return -1;
+  }
+  return score-name.length*0.01;
+}
+var overlay=document.getElementById('coden8r-cmdk-overlay');
+var input=document.getElementById('coden8r-cmdk-input');
+var list=document.getElementById('coden8r-cmdk-list');
+var filtered=COMMANDS.slice(),selIdx=0;
+function paintSel(){
+  var items=list.querySelectorAll('li[role="option"]');
+  for(var i=0;i<items.length;i++){
+    var on=i===selIdx;
+    items[i].setAttribute('aria-selected',on?'true':'false');
+    if(on){input.setAttribute('aria-activedescendant',items[i].id);items[i].scrollIntoView({block:'nearest'});}
+  }
+}
+function render(){
+  list.innerHTML='';
+  if(!filtered.length){
+    var em=document.createElement('div');
+    em.id='coden8r-cmdk-empty';
+    em.textContent='No matching commands';
+    list.appendChild(em);
+    return;
+  }
+  filtered.forEach(function(cmd,i){
+    var li=document.createElement('li');
+    li.id='coden8r-cmdk-opt-'+i;
+    li.setAttribute('role','option');
+    li.setAttribute('aria-selected',i===selIdx?'true':'false');
+    var nm=document.createElement('span');nm.textContent=cmd.name;
+    var hn=document.createElement('span');hn.className='k';hn.textContent=cmd.hint||'';
+    li.appendChild(nm);li.appendChild(hn);
+    li.addEventListener('click',function(){exec(i);});
+    li.addEventListener('mousemove',function(){if(selIdx!==i){selIdx=i;paintSel();}});
+    list.appendChild(li);
+  });
+  paintSel();
+}
+function applyFilter(){
+  var q=input.value.trim();
+  filtered=COMMANDS.map(function(c){return{c:c,s:fuzzyScore(c.name,q)};})
+    .filter(function(x){return x.s>=0;})
+    .sort(function(a,b){return b.s-a.s;})
+    .map(function(x){return x.c;});
+  selIdx=0;render();
+}
+function open(){overlay.hidden=false;input.value='';applyFilter();setTimeout(function(){input.focus();},0);}
+function close(){overlay.hidden=true;input.blur();}
+function exec(i){var cmd=filtered[i];close();if(cmd){try{cmd.run();}catch(e){}}}
+function isOpen(){return !overlay.hidden;}
+input.addEventListener('input',applyFilter);
+input.addEventListener('keydown',function(e){
+  var mod=e.ctrlKey||e.metaKey;
+  if(mod&&(e.key==='k'||e.key==='K')){e.preventDefault();e.stopPropagation();close();return;}
+  e.stopPropagation();
+  if(e.key==='ArrowDown'){e.preventDefault();if(filtered.length){selIdx=(selIdx+1)%filtered.length;paintSel();}}
+  else if(e.key==='ArrowUp'){e.preventDefault();if(filtered.length){selIdx=(selIdx-1+filtered.length)%filtered.length;paintSel();}}
+  else if(e.key==='Enter'){e.preventDefault();exec(selIdx);}
+  else if(e.key==='Escape'){e.preventDefault();close();}
+});
+overlay.addEventListener('mousedown',function(e){if(e.target===overlay)close();});
+document.addEventListener('keydown',function(e){
+  var mod=e.ctrlKey||e.metaKey;
+  if(mod&&(e.key==='k'||e.key==='K')){e.preventDefault();if(isOpen())close();else open();return;}
+  if(e.key==='Escape'&&isOpen()){close();}
+});
+var palBtn=findBtn(/command palette/i);
+if(palBtn){palBtn.addEventListener('click',function(){if(isOpen())close();else open();});}
+render();
+})();
+
+  </script>
+<script>
+(() => {
+'use strict';
+if (document.getElementById('qo-overlay')) return;
+
+const overlay = document.createElement('div');
+overlay.id = 'qo-overlay';
+overlay.hidden = true;
+overlay.innerHTML = `
+<section id="qo-dialog" role="dialog" aria-modal="true"
+aria-labelledby="qo-title">
+<div id="qo-heading">
+<span id="qo-title">QUICK OPEN</span>
+<button id="qo-close" type="button" aria-label="Close quick open">Esc ×</button>
+</div>
+<input id="qo-input" type="text" placeholder="Search files by name or path…"
+aria-label="Search files" role="combobox" aria-autocomplete="list"
+aria-expanded="false" aria-controls="qo-list"
+autocomplete="off" spellcheck="false">
+<div id="qo-list" role="listbox" aria-label="Files"></div>
+<div id="qo-status" role="status" aria-live="polite"></div>
+</section>`;
+document.body.appendChild(overlay);
+
+const input = document.getElementById('qo-input');
+const list = document.getElementById('qo-list');
+const status = document.getElementById('qo-status');
+const closeButton = document.getElementById('qo-close');
+let entries = [], matches = [], selected = 0, previousFocus = null;
+
+/*
+* Integration boundary: adjust these two functions to the IDE's actual
+* file store and opener if its API differs. DOM-backed entries use the
+* existing file/tab click handlers rather than replacing editor state.
+*/
+function collectFiles() {
+const found = new Map();
+const add = (path, activate) => {
+if (typeof path !== 'string' || !path.trim() || /[/]$/.test(path)) return;
+const key = path.replace(/\\/g, '/');
+if (!found.has(key)) {
+found.set(key, { path: key, name: key.split('/').pop(), activate });
+}
+};
+
+document.querySelectorAll(
+'[data-file-path], [data-filepath], [data-file], ' +
+'.file-item[data-path], .file[data-path], .tab[data-path], ' +
+'[role="treeitem"][data-path]'
+).forEach(node => {
+if (node.closest('#qo-overlay') ||
+node.matches('.folder, .directory, [data-type="folder"], ' +
+'[data-type="directory"], [data-is-directory="true"]') ||
+node.getAttribute('role') === 'treeitem' && node.hasAttribute('aria-expanded')) return;
+const path = node.getAttribute('data-file-path') ||
+node.getAttribute('data-filepath') ||
+node.getAttribute('data-path') || node.getAttribute('data-file');
+add(path, () => node.click());
+});
+
+let store = null, opener = null;
+try {
+store = typeof files !== 'undefined' ? files : window.files;
+opener = typeof openFile === 'function' ? openFile : window.openFile;
+} catch (_) {}
+if (store && typeof opener === 'function') {
+const addRecord = (value, key) => {
+if (value && typeof value === 'object' &&
+(value.isDirectory || value.type === 'folder' || value.type === 'directory')) return;
+const path = typeof value === 'string' && Array.isArray(store)
+? value : value && typeof value === 'object'
+? value.path || value.filePath || value.name || key : key;
+add(path, () => opener.call(window, path));
+};
+if (store instanceof Map) store.forEach(addRecord);
+else if (Array.isArray(store)) store.forEach(value => addRecord(value, null));
+else if (typeof store === 'object') {
+Object.entries(store).forEach(([key, value]) => addRecord(value, key));
+}
+}
+return [...found.values()];
+}
+
+function fuzzyScore(path, query) {
+if (!query) return 0;
+const text = path.toLowerCase();
+let at = -1, score = 0;
+for (const character of query) {
+const next = text.indexOf(character, at + 1);
+if (next < 0) return -Infinity;
+score += next === at + 1 ? 12 : 0;
+score += next === 0 || /[/_.-\s]/.test(text[next - 1]) ? 8 : 0;
+score -= next - at - 1;
+at = next;
+}
+if (text.slice(text.lastIndexOf('/') + 1).includes(query)) score += 30;
+return score - text.length * .01;
+}
+
+function iconFor(name) {
+const extension = name.split('.').pop().toLowerCase();
+if (['js', 'jsx', 'ts', 'tsx'].includes(extension)) return 'λ';
+if (['html', 'xml', 'svg'].includes(extension)) return '◇';
+if (['css', 'scss', 'less'].includes(extension)) return '#';
+if (['json', 'yaml', 'yml'].includes(extension)) return '{}';
+if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'ico'].includes(extension)) return '▧';
+return '≡';
+}
+
+function select(index) {
+selected = Math.max(0, Math.min(index, matches.length - 1));
+[...list.children].forEach((row, i) => {
+row.setAttribute('aria-selected', String(i === selected));
+});
+const row = list.children[selected];
+if (row) {
+input.setAttribute('aria-activedescendant', row.id);
+row.scrollIntoView({ block: 'nearest' });
+} else input.removeAttribute('aria-activedescendant');
+}
+
+function render() {
+const query = input.value.trim().toLowerCase();
+matches = entries.map(entry => ({
+entry, score: fuzzyScore(entry.path, query)
+})).filter(item => item.score !== -Infinity)
+.sort((a, b) => b.score - a.score ||
+a.entry.path.localeCompare(b.entry.path))
+.map(item => item.entry);
+list.replaceChildren();
+const fragment = document.createDocumentFragment();
+matches.forEach((entry, index) => {
+const row = document.createElement('div');
+row.id = `qo-option-${index}`;
+row.className = 'qo-option';
+row.setAttribute('role', 'option');
+const icon = document.createElement('span');
+icon.className = 'qo-icon';
+icon.setAttribute('aria-hidden', 'true');
+icon.textContent = iconFor(entry.name);
+const details = document.createElement('span');
+details.className = 'qo-details';
+const name = document.createElement('span');
+name.className = 'qo-name';
+name.textContent = entry.name;
+const path = document.createElement('span');
+path.className = 'qo-path';
+path.textContent = entry.path;
+details.append(name, path);
+row.append(icon, details);
+row.addEventListener('mousedown', event => event.preventDefault());
+row.addEventListener('click', () => activate(index));
+fragment.appendChild(row);
+});
+list.appendChild(fragment);
+status.textContent = matches.length
+? `${matches.length} / ${entries.length} files · ↑↓ navigate · Enter open`
+: entries.length ? 'No matching files.' : 'No files discovered.';
+select(0);
+}
+
+function close(restoreFocus = true) {
+overlay.hidden = true;
+input.setAttribute('aria-expanded', 'false');
+if (restoreFocus && previousFocus && previousFocus.isConnected) {
+previousFocus.focus();
+}
+}
+
+async function activate(index) {
+const entry = matches[index];
+if (!entry) return;
+close();
+try {
+await entry.activate();
+} catch (error) {
+previousFocus = document.activeElement;
+overlay.hidden = false;
+input.setAttribute('aria-expanded', 'true');
+input.focus();
+status.textContent = `Could not open ${entry.path}: ${error.message || error}`;
+}
+}
+
+function open() {
+if (overlay.hidden) previousFocus = document.activeElement;
+entries = collectFiles();
+input.value = '';
+overlay.hidden = false;
+input.setAttribute('aria-expanded', 'true');
+render();
+input.focus();
+}
+
+input.addEventListener('input', render);
+closeButton.addEventListener('click', () => close());
+overlay.addEventListener('click', event => {
+if (event.target === overlay) close();
+});
+
+window.addEventListener('keydown', event => {
+if (event.ctrlKey && !event.altKey && !event.metaKey && !event.shiftKey &&
+event.key.toLowerCase() === 'p') {
+event.preventDefault();
+event.stopImmediatePropagation();
+if (!event.repeat) open();
+return;
+}
+if (overlay.hidden || event.isComposing) return;
+if (event.key === 'Escape') {
+event.preventDefault();
+event.stopImmediatePropagation();
+close();
+} else if (event.target === input &&
+['ArrowDown', 'ArrowUp', 'Enter'].includes(event.key)) {
+event.preventDefault();
+event.stopImmediatePropagation();
+if (event.key === 'Enter') {
+if (!event.repeat) activate(selected);
+} else select(selected + (event.key === 'ArrowDown' ? 1 : -1));
+} else if (event.key === 'Tab') {
+event.preventDefault();
+event.stopImmediatePropagation();
+(document.activeElement === input ? closeButton : input).focus();
+}
+}, true);
+})();
+</script>
 </body>
 </html>
